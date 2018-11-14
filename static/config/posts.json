@@ -1,7 +1,8 @@
 {
-  "frontLimit": 12,
+  "frontLimit": "10",
   "progressShow": true,
   "tocShow": true,
   "socialShow": true,
-  "subscribeShow": true
+  "subscribeShow": true,
+  "showExcerpts": true
 }
