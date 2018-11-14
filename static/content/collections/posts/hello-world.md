@@ -9,7 +9,7 @@ categories: python
 meta:
   keywords: hello world
 isPage: false
-isFeatured: false
+isFeatured: true
 excerpt: This is a test article
 ---
 This is a test article
