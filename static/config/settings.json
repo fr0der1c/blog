@@ -1,8 +1,8 @@
 {
   "name": "Hummingbird",
-  "title": "Qards - the blogging platform for professionals",
-  "excerpt": "Qards is a blogging platform for professionals",
-  "baseUrl": "https://affectionate-hamilton-12254a.netlify.com",
+  "title": "Hummingbird - technical blog by Frederic Chan",
+  "excerpt": "Python, distributed system, and DevOps",
+  "baseUrl": "https://blog.admirable.one",
   "performanceMode": false,
   "logo": "/images/uploads/logo.png",
   "socialShareImg": "/images/uploads/andrew-ridley-76547-unsplash.jpg"
