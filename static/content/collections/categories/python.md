@@ -1,5 +1,5 @@
 ---
-title: python
-excerpt: python development
+title: Python
+excerpt: Python development
 ---
 
