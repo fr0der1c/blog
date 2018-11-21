@@ -1,8 +1,8 @@
 {
-  "name": "Hummingbird",
-  "title": "Hummingbird - technical blog by Frederic Chan",
+  "name": "Blog",
+  "title": "Blog as a admirable professional - technical blog by Frederic Chan",
   "excerpt": "Python, distributed system, and DevOps",
-  "baseUrl": "https://blog.admirable.one",
+  "baseUrl": "https://blog.admirable.pro",
   "performanceMode": false,
   "logo": "/images/uploads/logo.png",
   "socialShareImg": "/images/uploads/andrew-ridley-76547-unsplash.jpg"
