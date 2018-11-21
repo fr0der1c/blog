@@ -10,6 +10,8 @@ meta:
   keywords: hello world
 isPage: false
 isFeatured: true
+hero:
+  image: /images/uploads/andrew-ridley-76547-unsplash.jpg
 excerpt: This is a test article
 ---
 This is a test article
