@@ -4,7 +4,7 @@ created_at: 2018-11-21T14:43:21.767Z
 tags:
   - micro-service
 authors: Frederic Chan
-categories: admirable-insight
+categories: Python
 meta:
   keywords: everyclass 每课 微服务 架构 演进
 isPage: false
