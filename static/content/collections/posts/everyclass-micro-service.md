@@ -3,6 +3,8 @@ title: 每课的 micro-service 架构演进之路
 created_at: 2018-11-21T14:43:21.767Z
 tags:
   - micro-service
+  - architecture
+  - everyclass
 authors: Frederic Chan
 categories: Admirable Insight
 meta:
