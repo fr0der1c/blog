@@ -5,7 +5,7 @@ tags:
   - Python
   - devops
 authors: Frederic Chan
-categories: python
+categories: Python
 meta:
   keywords: hello world
 isPage: false

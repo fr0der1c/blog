@@ -4,7 +4,7 @@ created_at: 2018-11-21T14:43:21.767Z
 tags:
   - Admirable Insight
 authors: Frederic Chan
-categories: Admirable Insight
+categories: python
 meta:
   keywords: everyclass 每课 微服务 架构 演进
 isPage: false
@@ -14,4 +14,4 @@ excerpt: >-
   PPT，作为一个架构演进的记录，也希望能帮助到其他人。
 ---
 待更新
-fix
+hello world
