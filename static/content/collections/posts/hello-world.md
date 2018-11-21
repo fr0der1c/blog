@@ -2,7 +2,7 @@
 title: Hello World
 created_at: 2018-11-14T17:06:35.014Z
 tags:
-  - python
+  - Python
   - devops
 authors: Frederic Chan
 categories: python
