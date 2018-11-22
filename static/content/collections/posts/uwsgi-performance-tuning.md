@@ -15,7 +15,7 @@ hero:
   image: /images/uploads/andrew-ridley-76547-unsplash.jpg
 excerpt: >-
   uWSGI 是 Python Web
-  世界里广泛采用的服务器。它的配置非常复杂，如果要用于生产环境，有很多东西值得细细了解。本篇文章作为自己进行性能调优的记录。
+  世界里广泛采用的应用服务器。它的配置非常复杂，如果要用于生产环境，有很多东西值得细细了解。本篇文章作为自己进行性能调优的记录。
 ---
 待更新
 hello world
