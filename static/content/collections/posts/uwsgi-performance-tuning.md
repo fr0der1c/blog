@@ -43,13 +43,21 @@ $ ab -c 50 -n 5000 -s 90 http://127.0.0.1/_healthCheck
 
 {"widget":"qards-code","config":"eyJjb2RlIjoiUmVxdWVzdHMgcGVyIHNlY29uZDogICAgNzI5LjY1IFsjL3NlY10gKG1lYW4pXG5UaW1lIHBlciByZXF1ZXN0OiAgICAgICA2OC41MjYgW21zXSAobWVhbilcblRpbWUgcGVyIHJlcXVlc3Q6ICAgICAgIDEuMzcxIFttc10gKG1lYW4sIGFjcm9zcyBhbGwgY29uY3VycmVudCByZXF1ZXN0cykifQ=="}
 
-{"widget":"qards-section-heading","config":"eyJ0eXBlIjoic2Vjb25kYXJ5IiwidGl0bGUiOiJBZGp1c3QgYG5ldC5jb3JlLnNvbWF4Y29ubmAgcGFyYW1ldGVyIn0="}
+{"widget":"qards-section-heading","config":"eyJ0eXBlIjoic2Vjb25kYXJ5IiwidGl0bGUiOiJEbyBub3QgdXNlIEFwYWNoZSBCZW5jaG1hcmsgb24gTWFjISJ9"}
 
-尝试改大并发量，这时候出现了问题：
+当我尝试增大并发量的时候，出现了问题：
 
 {"widget":"qards-code","config":"eyJjb2RlIjoiQmVuY2htYXJraW5nIDEyNy4wLjAuMSAoYmUgcGF0aWVudClcbkNvbXBsZXRlZCA1MDAgcmVxdWVzdHNcbkNvbXBsZXRlZCAxMDAwIHJlcXVlc3RzXG5Db21wbGV0ZWQgMTUwMCByZXF1ZXN0c1xuQ29tcGxldGVkIDIwMDAgcmVxdWVzdHNcbkNvbXBsZXRlZCAyNTAwIHJlcXVlc3RzXG5Db21wbGV0ZWQgMzAwMCByZXF1ZXN0c1xuQ29tcGxldGVkIDM1MDAgcmVxdWVzdHNcblxuVGVzdCBhYm9ydGVkIGFmdGVyIDEwIGZhaWx1cmVzXG5hcHJfc29ja2V0X2Nvbm5lY3QoKTogQ29ubmVjdGlvbiByZXNldCBieSBwZWVyICg1NCkifQ=="}
 
-Google 了一下，发现问题在于没有 `accept()` 的请求太多了，超过了系统默认的最大值128（这个值对于生产环境的 Web 服务器来说太小了），因此内核直接重置了连接。在基于 Kubernetes 的生产环境中，在 Pod 的 template 中加入 `"security.alpha.kubernetes.io/unsafe-sysctls": "net.core.somaxconn=4096"` 即可。（需要先配置节点上的 kubelet，允许 `net.core.somaxconn`这个 unsafe sysctl，配置方法可参考 <http://bazingafeng.com/2017/12/23/kubernetes-uses-the-security-context-and-sysctl/>。原先我以为修改了宿主的内核参数就可以了，但是后来发现 Docker 对这个参数好像有隔离）
+经过搜索，发现网友纷纷表示这是 Mac 自带的 ab 的锅，有说要自己编译的，有说要修改 ulimit 的，但是我两个都尝试了，并没有解决问题。最终看到别人得出的结论：**ab doesn't work on macOS** （<https://serverfault.com/questions/806585/why-is-ab-erroring-with-apr-socket-recv-connection-reset-by-peer-54-on-osx>）。不过也不是没有 workaround，你可以在 Docker for Mac 里运行 ab（Docker for Mac 自带了一个 Linux 虚拟机）。
+
+使用 `docker run -it --rm --net host httpd bash` 来启动一个包含 ab 的容器，之后使用 ab 都使用这个容器里的 ab。
+
+{"widget":"qards-section-heading","config":"eyJ0eXBlIjoic2Vjb25kYXJ5IiwidGl0bGUiOiJBZGp1c3QgYG5ldC5jb3JlLnNvbWF4Y29ubmAgcGFyYW1ldGVyIn0="}
+
+当你所有的 worker 都在处理任务时，它们无法 accept 新的请求。因此在请求源源不断地到来时，你的内核缓冲区将不断积累未被 accept 的连接，直到超过内核的 `net.core.somaxconn` 上限。Linux 中这个参数的默认值为 128。这个值对于 Web 服务器来说太小了，因此我们需要修改这个参数。
+
+在基于 Kubernetes 的生产环境中，在 Pod 的 template 中加入 `"security.alpha.kubernetes.io/unsafe-sysctls": "net.core.somaxconn=4096"` 即可。（需要先配置节点上的 kubelet，允许 `net.core.somaxconn`这个 unsafe sysctl，配置方法可参考 <http://bazingafeng.com/2017/12/23/kubernetes-uses-the-security-context-and-sysctl/>。原先我以为修改了宿主的内核参数就可以了，但是后来发现 Docker 对这个参数好像有隔离）
 
 由于我在本地测试的使用使用的是 docker-compose，因此需要把这个参数加入到 `docker-compose.yml` 中：
 
@@ -71,7 +79,7 @@ Google 了一下，发现问题在于没有 `accept()` 的请求太多了，超�
 
 我们增加 worker 数量到 10，然后再次测试：
 
-（测试结果）
+{"widget":"qards-code","config":"eyJjb2RlIjoiUmVxdWVzdHMgcGVyIHNlY29uZDogICAgMTUxNi41NCBbIy9zZWNdIChtZWFuKVxuVGltZSBwZXIgcmVxdWVzdDogICAgICAgMzI5LjY5NyBbbXNdIChtZWFuKVxuVGltZSBwZXIgcmVxdWVzdDogICAgICAgMC42NTkgW21zXSAobWVhbiwgYWNyb3NzIGFsbCBjb25jdXJyZW50IHJlcXVlc3RzKSJ9"}
 
 那么继续改大 worker 数量，能不能让吞吐量继续提升呢？我们把 worker 数量改到 100，然后进行测试：
 
