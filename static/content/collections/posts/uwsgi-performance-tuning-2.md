@@ -21,4 +21,6 @@ excerpt: >-
 
 {"widget":"qards-reference","config":"eyJyZWZlcmVuY2UiOiJ1d3NnaS1wZXJmb3JtYW5jZS10dW5pbmcifQ=="}
 
-11
+{"widget":"qards-divider","config":"eyJ0eXBlIjoiYnVsbGV0cyJ9"}
+
+先直奔主题，说说 worker 数量设置过多的影响吧：**上下文切换过于频繁，导致每一个 worker 的处理时间成倍上升，最终造成吞吐量不升反降**。
