@@ -89,6 +89,8 @@ Google 了一下，发现问题在于没有 `accept()` 的请求太多了，超�
 
 123
 
-关于 uWSGI 和惊群问题，官方有一篇文档值得参考：<https://uwsgi-docs.readthedocs.io/en/latest/articles/SerializingAccept.html>。
+uWSGI 如何解决惊群问题？官方提供的解决方案是 thunder lock。简要来说，thunder lock 是一把 worker 进程间共享的锁，同一时刻只会有一个进程在监听 `accept()`，通过将监听串行化，避免了惊群问题 （这也是 Apache 和 Nginx 采用的方案）。
+
+关于 uWSGI 和惊群问题，官方有一篇文档值得阅读：<https://uwsgi-docs.readthedocs.io/en/latest/articles/SerializingAccept.html>。
 
 {"widget":"qards-section-heading","config":"eyJ0eXBlIjoicHJpbWFyeSIsInRpdGxlIjoiTXVsdGl0aHJlYWRpbmcifQ=="}
