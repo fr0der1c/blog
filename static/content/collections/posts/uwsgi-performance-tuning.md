@@ -91,7 +91,7 @@ uWSGI 并不是只需要监听 accept() 请求，因此内核对 accept() 的防
 
 虽然频繁的加锁解锁听起来非常低效，但是连 Nginx 这样高效的程序都是采用这样的方案，对于我们的小项目来说肯定也问题不大。
 
-**事实上，当你在 uWSGI 中使用多线程而非多进程时，uWSGI 会自动创建一个 pthread mutex，将各个线程中的 epoll()/kqueue()/poll()/select()… 操作串行化。但在多进程的模式下，你需要手动开启 thunder lock。**
+**事实上，当你在 uWSGI 中使用多线程而非多进程时，uWSGI 会自动创建一个 pthread mutex，将各个线程中的 epoll() / kqueue() / poll() / select()… 操作串行化。但在多进程的模式下，你需要手动开启 thunder lock。**
 
 可能你会问，为什么我们使用多进程而不是多线程呢？主要是因为，我们的 app 是用 Python 写的。Python 在多线程的模式下，多个线程会共享同一把 GIL，对于 CPU-bound 的操作来说，没有带来实际的效率提升。而使用多进程，实际上是有多个解释器在工作，每个解释器有自己的 GIL，因此性能提升更高。
 
