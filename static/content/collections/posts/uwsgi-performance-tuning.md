@@ -83,14 +83,16 @@ Google 了一下，发现问题在于没有 `accept()` 的请求太多了，超�
 
 惊群简单来说就是多个进程或者线程在等待同一个事件，当事件发生时，所有线程和进程都会被内核唤醒。唤醒后通常只有一个进程获得了该事件并进行处理，其他进程发现获取事件失败后又继续进入了等待状态。监听同一个事件的进程数越多，争用 CPU 的情况越严重（尽管实际上只有一个进程能成功获得事件并进行处理），造成了严重的上下文切换成本。
 
-内核的设计者并不傻。在 Linux 2.6 以后，多个进程监听一个文件描述符的 `accept()` 操作，内核会防止出现惊群问题。然而，并不是所有的惊群问题都能在内核中解决。比如，uWSGI 的循环引擎示例如下：
+内核的设计者并不傻。在 Linux 2.6 以后，多个进程监听一个文件描述符的 `accept()` 操作，内核会防止出现惊群问题。然而，并不是所有的惊群问题都能在内核中解决。比如，uWSGI 的循环引擎示例代码如下：
 
 {"widget":"qards-code","config":"eyJjb2RlIjoiZm9yKDs7KSB7XG4gICAgaW50IGludGVyZXN0aW5nX2ZkID0gd2FpdF9mb3JfZmRzKCk7XG4gICAgaWYgKGZkX25lZWRfYWNjZXB0KGludGVyZXN0aW5nX2ZkKSkge1xuICAgICAgICBpbnQgY2xpZW50ID0gYWNjZXB0KGludGVyZXN0aW5nX2ZkLCAuLi4pO1xuICAgICAgICBpZiAoY2xpZW50IDwgMCkgY29udGludWU7XG4gICAgfVxuICAgIGVsc2UgaWYgKGZkX2lzX2Ffc2lnbmFsKGludGVyZXN0aW5nX2ZkKSkge1xuICAgICAgICBtYW5hZ2VfdXdzZ2lfc2lnbmFsKGludGVyZXN0aW5nX2ZkKTtcbiAgICB9XG4gICAgLi4uXG59IiwibGFuZ3VhZ2UiOiJjcHAifQ=="}
 
-123
-
-uWSGI 如何解决惊群问题？官方提供的解决方案是 thunder lock。简要来说，thunder lock 是一把 worker 进程间共享的锁，同一时刻只会有一个进程在监听 `accept()`，通过将监听串行化，避免了惊群问题 （这也是 Apache 和 Nginx 采用的方案）。
+uWSGI 并不是只需要监听 accept() 请求，因此内核对 accept() 的防惊群优化对 uWSGI 并不起作用。那么 uWSGI 如何解决惊群问题？官方提供的解决方案是 thunder lock。简要来说，thunder lock 是一把 worker 进程间共享的锁，同一时刻只会有一个进程在监听 `accept()`，通过将监听串行化，避免了惊群问题 （这也是 Apache 和 Nginx 采用的方案）。
 
 关于 uWSGI 和惊群问题，官方有一篇文档值得阅读：<https://uwsgi-docs.readthedocs.io/en/latest/articles/SerializingAccept.html>。
+
+我们在 uWSGI 配置文件中添加 `thunder-lock = True`，然后再测试一次性能：
+
+（测试结果）
 
 {"widget":"qards-section-heading","config":"eyJ0eXBlIjoicHJpbWFyeSIsInRpdGxlIjoiTXVsdGl0aHJlYWRpbmcifQ=="}
