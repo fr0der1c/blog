@@ -81,13 +81,7 @@ $ ab -c 500 -n 5000 -s 90 http://127.0.0.1:80/_healthCheck
 
 {"widget":"qards-code","config":"eyJjb2RlIjoiUmVxdWVzdHMgcGVyIHNlY29uZDogICAgMTQzMC44MCBbIy9zZWNdIChtZWFuKVxuVGltZSBwZXIgcmVxdWVzdDogICAgICAgNzQ2LjEwOSBbbXNdIChtZWFuKVxuVGltZSBwZXIgcmVxdWVzdDogICAgICAgMC43NDYgW21zXSAobWVhbiwgYWNyb3NzIGFsbCBjb25jdXJyZW50IHJlcXVlc3RzKSJ9"}
 
-测试的结果令我们有点惊讶，增大 worker 数量到 10 之后，吞吐量不升反降了。
-
-那么继续改大 worker 数量，能不能让吞吐量继续提升呢？我们把 worker 数量改到 100，然后进行测试：
-
-（测试结果）
-
-测试的结果令我们有点惊讶，增大 worker 数量到 100 之后，吞吐量不升反降了。这是为什么呢？欢迎来到惊群问题（thundering the herd）。
+测试的结果令我们有点惊讶，增大 worker 数量到 10 之后，吞吐量不仅没有上升，反而稍微下降了。欢迎来到惊群问题（thundering the herd）。
 
 {"widget":"qards-section-heading","config":"eyJ0eXBlIjoic2Vjb25kYXJ5IiwidGl0bGUiOiJUaHVuZGVyaW5nIHRoZSBoZXJkIn0="}
 
@@ -111,7 +105,7 @@ uWSGI 并不是只需要监听 accept() 请求，因此内核对 accept() 的防
 
 {"widget":"qards-code","config":"eyJjb2RlIjoiUmVxdWVzdHMgcGVyIHNlY29uZDogICAgMTY4My4wNCBbIy9zZWNdIChtZWFuKVxuVGltZSBwZXIgcmVxdWVzdDogICAgICAgNTAxLjAyNyBbbXNdIChtZWFuKVxuVGltZSBwZXIgcmVxdWVzdDogICAgICAgMC41MDEgW21zXSAobWVhbiwgYWNyb3NzIGFsbCBjb25jdXJyZW50IHJlcXVlc3RzKSJ9"}
 
-可以看到，开启了 thunder lock 之后，性能有所恢复。
+可以看到，开启了 thunder lock 之后，性能有所恢复。是不是有了锁之后，我们就可以随便开大进程数了呢？答案是否定的。我们在下一篇谈这个问题。
 
 {"widget":"qards-section-heading","config":"eyJ0eXBlIjoicHJpbWFyeSIsInRpdGxlIjoiTXVsdGl0aHJlYWRpbmcifQ=="}
 
@@ -124,8 +118,6 @@ uWSGI 并不是只需要监听 accept() 请求，因此内核对 accept() 的防
 ```
 2132.08 1325.72 1795.32 1381.67 1283.08 1399.98 1488.05
 ```
-
-
 
 {"widget":"qards-section-heading","config":"eyJ0eXBlIjoicHJpbWFyeSIsInRpdGxlIjoiQ29uY2x1c2lvbiJ9"}
 
