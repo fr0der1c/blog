@@ -77,7 +77,11 @@ Google 了一下，发现问题在于没有 `accept()` 的请求太多了，超�
 
 （测试结果）
 
-测试的结果令我们有点惊讶，增大 worker 数量到 100 之后，吞吐量不升反降了。这是为什么呢？欢迎来到惊群问题（thundering the herd）：
+测试的结果令我们有点惊讶，增大 worker 数量到 100 之后，吞吐量不升反降了。这是为什么呢？欢迎来到惊群问题（thundering the herd）。
+
+
+
+{"widget":"qards-section-heading","config":"eyJ0eXBlIjoic2Vjb25kYXJ5IiwidGl0bGUiOiJUaHVuZGVyaW5nIHRoZSBoZXJkIn0="}
 
 惊群简单来说就是多个进程或者线程在等待同一个事件，当事件发生时，所有线程和进程都会被内核唤醒。唤醒后通常只有一个进程获得了该事件并进行处理，其他进程发现获取事件失败后又继续进入了等待状态。监听同一个事件的进程数越多，争用 CPU 的情况越严重（尽管实际上只有一个进程能成功获得事件并进行处理），造成了严重的上下文切换成本。
 
