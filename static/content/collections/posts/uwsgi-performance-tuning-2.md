@@ -49,4 +49,8 @@ excerpt: >-
 
 值得注意的是，我们这次测试的用例可能比较偏向 CPU-bound，如果是一个 IO-bound 的用例，测试出来的结果可能稍有不同。
 
+引用一下官方文档中的一句话：
+
+> There is no magic rule for setting the number of processes or threads to use. It is very much application and system dependent. Simple math like `processes = 2 * cpucores` will not be enough. You need to experiment with various setups and be prepared to constantly monitor your apps. `uwsgitop` could be a great tool to find the best values.
+
 至此，uWSGI 部分的调优就差不多了。接下来我会开始考虑程序代码、业务逻辑方面的调优。
