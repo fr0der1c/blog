@@ -61,6 +61,12 @@ Google 了一下，发现问题在于没有 `accept()` 的请求太多了，超�
 
 我们来尝试一些邪门的小技巧吧，比如关闭 uWSGI 的访问日志。关闭它对我们不会产生多大的影响，因为生产环境中在反向代理处会有日志，而在开发环境中，无用的访问日志会淹没重要的报错信息。在 uWSGI 的配置文件中加入 `disable-logging = True` ，然后我们再来测试一下性能：
 
+{"widget":"qards-code","config":"eyJjb2RlIjoiUmVxdWVzdHMgcGVyIHNlY29uZDogICAgOTY5LjEwIFsjL3NlY10gKG1lYW4pXG5UaW1lIHBlciByZXF1ZXN0OiAgICAgICAxMDMuMTg5IFttc10gKG1lYW4pXG5UaW1lIHBlciByZXF1ZXN0OiAgICAgICAxLjAzMiBbbXNdIChtZWFuLCBhY3Jvc3MgYWxsIGNvbmN1cnJlbnQgcmVxdWVzdHMpIn0="}
+
 {"widget":"qards-section-heading","config":"eyJ0eXBlIjoicHJpbWFyeSIsInRpdGxlIjoiQWRkIG1vcmUgd29ya2VycyJ9"}
 
-在性能不够时，增加 worker 是一个很常见的思路。
+在性能不够时，增加 worker 是一个很常见的思路。我们当前的配置只有 4 个进程（每个进程中一个线程），这意味着如果 4 个 worker 都在忙碌，程序就会暂时卡住。当然，比这更糟糕的是，如果代码出现了死循环，并且这段死循环代码在全部 worker 中执行，并且你没有设置 `harakiri` 参数，你的程序会永久卡住，除非你强行重启 uWSGI。
+
+
+
+{"widget":"qards-section-heading","config":"eyJ0eXBlIjoicHJpbWFyeSIsInRpdGxlIjoiTXVsdGl0aHJlYWRpbmcifQ=="}
