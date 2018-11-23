@@ -51,10 +51,12 @@ Google 了一下，发现问题在于没有 `accept()` 的请求太多了，超�
 
 {"widget":"qards-code","config":"eyJjb2RlIjoidmVyc2lvbjogXCIzXCJcbnNlcnZpY2VzOlxuICBldmVyeWNsYXNzLXNlcnZlcjpcbiAgICBpbWFnZTogZXZlcnljbGFzcy1zZXJ2ZXI6bGF0ZXN0XG4gICAgc3lzY3RsczpcbiAgICAtIG5ldC5jb3JlLnNvbWF4Y29ubj00MDk2XG4gICAgZW52aXJvbm1lbnQ6XG4gICAgICBNT0RFOiBERVZFTE9QTUVOVFxuICAgIHBvcnRzOlxuICAgIC0gODA6ODAiLCJsYW5ndWFnZSI6InlhbWwifQ=="}
 
-除了内核的限制之外，还有 uWSGI 本身的限制。因此，在 uWSGI 配置文件中加入：`listen = 4096`（即监听队列长度为 4096），现在启动 uWSGI 时你可以看到 your server socket listen backlog is limited to 4096 connections 的字样，表明设置成功了。（如果这个值设置的比系统最大值大，会导致 uWSGI 无法启动）
-
-
-
-
+除了内核的限制之外，还有 uWSGI 本身的限制。因此，在 uWSGI 配置文件中加入：`listen = 4096`（即监听队列长度为 4096），现在启动 uWSGI 时你可以看到 `your server socket listen backlog is limited to 4096 connections` 的字样，表明设置成功了。（如果这个值设置的比系统最大值大，会导致 uWSGI 无法启动）
 
 {"widget":"qards-section-heading","config":"eyJ0eXBlIjoicHJpbWFyeSIsInRpdGxlIjoiRGlzYWJsZSBMb2dnaW5nIn0="}
+
+我们来尝试一些邪门的小技巧吧，比如关闭 uWSGI 的访问日志。关闭它对我们不会产生多大的影响，因为生产环境中在反向代理处会有日志，而在开发环境中，无用的访问日志会淹没重要的报错信息。在 uWSGI 的配置文件中加入 `disable-logging = True` ，然后我们再来测试一下性能：
+
+{"widget":"qards-section-heading","config":"eyJ0eXBlIjoicHJpbWFyeSIsInRpdGxlIjoiQWRkIG1vcmUgd29ya2VycyJ9"}
+
+在性能不够时，增加 worker 是一个很常见的思路。
