@@ -89,6 +89,10 @@ Google 了一下，发现问题在于没有 `accept()` 的请求太多了，超�
 
 uWSGI 并不是只需要监听 accept() 请求，因此内核对 accept() 的防惊群优化对 uWSGI 并不起作用。那么 uWSGI 如何解决惊群问题？官方提供的解决方案是 thunder lock。简要来说，thunder lock 是一把 worker 进程间共享的锁，同一时刻只会有一个进程在监听 `accept()`，通过将监听串行化，避免了惊群问题 （这也是 Apache 和 Nginx 采用的方案）。
 
+**事实上，当你在 uWSGI 中使用多线程而非多进程时，uWSGI 会自动创建一个 pthread mutex，将各个线程中的 epoll()/kqueue()/poll()/select()… 操作串行化。但在多进程的模式下，你需要手动开启 thunder lock。**
+
+可能你会问，为什么我们使用多进程而不是多线程呢？主要是因为，我们的 app 是用 Python 写的。Python 在多线程的模式下，多个线程会共享同一把 GIL，对于 CPU-bound 的操作来说，没有带来实际的效率提升。而使用多进程，实际上是有多个解释器在工作，每个解释器有自己的 GIL，因此性能提升更高。
+
 关于 uWSGI 和惊群问题，官方有一篇文档值得阅读：<https://uwsgi-docs.readthedocs.io/en/latest/articles/SerializingAccept.html>。
 
 我们在 uWSGI 配置文件中添加 `thunder-lock = True`，然后再测试一次性能：
