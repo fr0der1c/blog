@@ -23,7 +23,7 @@ excerpt: >-
 
 在明确了这个目标之后，考虑到健康检查页面（/_healthCheck）是一个没有数据库查询、甚至没有任何业务逻辑直接返回 JSON 的 endpoint，我选择了它作为优化 uWSGI 时测试的对象。（通常来说，你可能希望在健康检查的 endpoint 中加入检查数据库连接等逻辑，但在目前版本的每课 Server 中，我们仅仅直接返回了一个`{"status": "ok"}` 的 JSON）
 
-> 实际情况比我上面的描述略微复杂一点：我们有个 `before_request` 钩子，在请求开始处理前标识每个独立用户，这个过程会访问数据库获取唯一 ID，但因为我们测试的是数据库无关的性能问题，我临时把这个功能去掉了）
+> 实际情况比我上面的描述略微复杂一点：我们的 Flask 程序中有个 `before_request` 钩子，在请求开始处理前标识每个独立用户，这个过程会访问数据库获取唯一 ID，但因为我们测试的是数据库无关的性能问题，因此我临时把这个功能去掉了）
 
 {"widget":"qards-section-heading","config":"eyJ0aXRsZSI6IlByZXBhcmF0aW9ucyBiZWZvcmUgc3RhcnQgdHVuaW5nIiwidHlwZSI6InByaW1hcnkifQ=="}
 
@@ -43,4 +43,8 @@ $ ab -c 200 -n 3000  http://127.0.0.1:80/
 
 尝试改大并发量，这时候出现了问题：
 
-{"widget":"image","config":"e30="}
+{"widget":"qards-code","config":"eyJjb2RlIjoiQmVuY2htYXJraW5nIDEyNy4wLjAuMSAoYmUgcGF0aWVudClcbmFwcl9zb2NrZXRfcmVjdjogQ29ubmVjdGlvbiByZXNldCBieSBwZWVyICg1NClcblRvdGFsIG9mIDEgcmVxdWVzdHMgY29tcGxldGVkXG4ifQ=="}
+
+Google 了一下，发现问题在于没有 `accept()` 的请求太多了，超过了系统默认的最大值128（这个值对于生产环境的 Web 服务器来说太小了），因此内核直接重置了连接。在基于 Kubernetes 的生产环境中，在 Pod 的 template 中加入 `"security.alpha.kubernetes.io/unsafe-sysctls": "net.core.somaxconn=4096"` 即可。（需要先配置节点上的 kubelet，允许 `net.core.somaxconn`这个 unsafe sysctl，配置方法可参考 <http://bazingafeng.com/2017/12/23/kubernetes-uses-the-security-context-and-sysctl/>）由于我在本地测试的使用使用的是 docker-compose，因此需要把这个参数加入到 `docker-compose.yml` 中：
+
+{"widget":"qards-code","config":"eyJjb2RlIjoidmVyc2lvbjogXCIzXCJcbnNlcnZpY2VzOlxuICBldmVyeWNsYXNzLXNlcnZlcjpcbiAgICBpbWFnZTogZXZlcnljbGFzcy1zZXJ2ZXI6bGF0ZXN0XG4gICAgc3lzY3RsczpcbiAgICAtIG5ldC5jb3JlLnNvbWF4Y29ubj00MDk2XG4gICAgZW52aXJvbm1lbnQ6XG4gICAgICBNT0RFOiBERVZFTE9QTUVOVFxuICAgIHBvcnRzOlxuICAgIC0gODA6ODAiLCJsYW5ndWFnZSI6InlhbWwifQ=="}
