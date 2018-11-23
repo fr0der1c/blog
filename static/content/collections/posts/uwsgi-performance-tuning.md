@@ -119,4 +119,8 @@ uWSGI 并不是只需要监听 accept() 请求，因此内核对 accept() 的防
 
 {"widget":"qards-code","config":"eyJjb2RlIjoiUmVxdWVzdHMgcGVyIHNlY29uZDogICAgMTUwOC4zMiBbIy9zZWNdIChtZWFuKVxuVGltZSBwZXIgcmVxdWVzdDogICAgICAgNTU3LjAwNCBbbXNdIChtZWFuKVxuVGltZSBwZXIgcmVxdWVzdDogICAgICAgMC41NTcgW21zXSAobWVhbiwgYWNyb3NzIGFsbCBjb25jdXJyZW50IHJlcXVlc3RzKSJ9"}
 
-不过，e
+不过这也很正常，因为每一次的测试都是有波动范围的。以上的测试结果中的第一项（requests per second）实际上不是原始的数据，而是我运行 5 次平均后的结果。尽管平均值一定程度上让数据更加可靠，但我仍然不清楚我是否应该舍弃异常高的值（并且我不清楚为何这么高的吞吐量只出现了一次）：
+
+```
+2132.08 1325.72 1795.32 1381.67 1283.08 1399.98 1488.05
+```
