@@ -79,7 +79,9 @@ $ ab -c 500 -n 5000 -s 90 http://127.0.0.1:80/_healthCheck
 
 我们增加 worker 数量到 10，然后再次测试：
 
-{"widget":"qards-code","config":"eyJjb2RlIjoiUmVxdWVzdHMgcGVyIHNlY29uZDogICAgMTUxNi41NCBbIy9zZWNdIChtZWFuKVxuVGltZSBwZXIgcmVxdWVzdDogICAgICAgMzI5LjY5NyBbbXNdIChtZWFuKVxuVGltZSBwZXIgcmVxdWVzdDogICAgICAgMC42NTkgW21zXSAobWVhbiwgYWNyb3NzIGFsbCBjb25jdXJyZW50IHJlcXVlc3RzKSJ9"}
+{"widget":"qards-code","config":"eyJjb2RlIjoiUmVxdWVzdHMgcGVyIHNlY29uZDogICAgMTQzMC44MCBbIy9zZWNdIChtZWFuKVxuVGltZSBwZXIgcmVxdWVzdDogICAgICAgNzQ2LjEwOSBbbXNdIChtZWFuKVxuVGltZSBwZXIgcmVxdWVzdDogICAgICAgMC43NDYgW21zXSAobWVhbiwgYWNyb3NzIGFsbCBjb25jdXJyZW50IHJlcXVlc3RzKSJ9"}
+
+测试的结果令我们有点惊讶，增大 worker 数量到 10 之后，吞吐量不升反降了。
 
 那么继续改大 worker 数量，能不能让吞吐量继续提升呢？我们把 worker 数量改到 100，然后进行测试：
 
