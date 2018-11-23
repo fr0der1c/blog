@@ -23,7 +23,7 @@ excerpt: >-
 
 在明确了这个目标之后，考虑到首页是一个没有数据库查询、纯模板渲染的 endpoint，我选择了首页作为测试的对象。（实际情况是：我们有个 `before_request` 钩子，在请求开始处理前标识每个独立用户，这个过程会访问数据库获取唯一 ID，但为了测试我把这个功能去掉了）
 
-{"widget":"qards-section-heading","config":"eyJ0aXRsZSI6IlByZS10ZXN0IHdvcmtzIn0="}
+{"widget":"qards-section-heading","config":"eyJ0aXRsZSI6IlByZXBhcmF0aW9ucyBiZWZvcmUgc3RhcnQgdHVuaW5nIiwidHlwZSI6InByaW1hcnkifQ=="}
 
 首先贴一下 tuning 之前的 uwsgi.ini：
 
