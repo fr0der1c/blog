@@ -1,5 +1,5 @@
 ---
-title: 我如何对 uWSGI 进行性能调优
+title: 我如何对 uWSGI 进行性能调优（1）：快速参数调整
 created_at: 2018-11-21T14:43:21.767Z
 tags:
   - uWSGI
