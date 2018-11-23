@@ -63,10 +63,10 @@ Google 了一下，发现问题在于没有 `accept()` 的请求太多了，超�
 
 {"widget":"qards-code","config":"eyJjb2RlIjoiUmVxdWVzdHMgcGVyIHNlY29uZDogICAgOTY5LjEwIFsjL3NlY10gKG1lYW4pXG5UaW1lIHBlciByZXF1ZXN0OiAgICAgICAxMDMuMTg5IFttc10gKG1lYW4pXG5UaW1lIHBlciByZXF1ZXN0OiAgICAgICAxLjAzMiBbbXNdIChtZWFuLCBhY3Jvc3MgYWxsIGNvbmN1cnJlbnQgcmVxdWVzdHMpIn0="}
 
+老实说，在测试之前我并不太相信关闭日志会对性能造成多大的提升。但结果表明，关闭日志将性能提升了 30%。
+
 {"widget":"qards-section-heading","config":"eyJ0eXBlIjoicHJpbWFyeSIsInRpdGxlIjoiQWRkIG1vcmUgd29ya2VycyJ9"}
 
 在性能不够时，增加 worker 是一个很常见的思路。我们当前的配置只有 4 个进程（每个进程中一个线程），这意味着如果 4 个 worker 都在忙碌，程序就会暂时卡住。当然，比这更糟糕的是，如果代码出现了死循环，并且这段死循环代码在全部 worker 中执行，并且你没有设置 `harakiri` 参数，你的程序会永久卡住，除非你强行重启 uWSGI。
-
-
 
 {"widget":"qards-section-heading","config":"eyJ0eXBlIjoicHJpbWFyeSIsInRpdGxlIjoiTXVsdGl0aHJlYWRpbmcifQ=="}
