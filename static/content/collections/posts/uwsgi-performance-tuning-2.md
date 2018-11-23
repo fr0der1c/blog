@@ -6,7 +6,7 @@ tags:
   - web
   - Python
 authors: Frederic Chan
-categories: Admirable Insight
+categories: Python
 meta:
   keywords: uWSGI Python web
 isPage: false
