@@ -19,7 +19,7 @@ excerpt: >-
 ---
 如果你还没有看过上一篇文章，建议你先阅读：
 
-{"widget":"qards-reference","config":"eyJyZWZlcmVuY2UiOiJ1d3NnaS1wZXJmb3JtYW5jZS10dW5pbmcifQ=="}
+{"widget":"qards-reference","config":"eyJyZWZlcmVuY2UiOiIifQ=="}
 
 {"widget":"qards-divider","config":"eyJ0eXBlIjoiYnVsbGV0cyJ9"}
 
