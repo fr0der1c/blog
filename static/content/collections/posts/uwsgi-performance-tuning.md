@@ -45,10 +45,16 @@ $ ab -c 50 -n 5000 -s 90 http://127.0.0.1/_healthCheck
 
 {"widget":"qards-code","config":"eyJjb2RlIjoiQmVuY2htYXJraW5nIDEyNy4wLjAuMSAoYmUgcGF0aWVudClcbkNvbXBsZXRlZCA1MDAgcmVxdWVzdHNcbkNvbXBsZXRlZCAxMDAwIHJlcXVlc3RzXG5Db21wbGV0ZWQgMTUwMCByZXF1ZXN0c1xuQ29tcGxldGVkIDIwMDAgcmVxdWVzdHNcbkNvbXBsZXRlZCAyNTAwIHJlcXVlc3RzXG5Db21wbGV0ZWQgMzAwMCByZXF1ZXN0c1xuQ29tcGxldGVkIDM1MDAgcmVxdWVzdHNcblxuVGVzdCBhYm9ydGVkIGFmdGVyIDEwIGZhaWx1cmVzXG5hcHJfc29ja2V0X2Nvbm5lY3QoKTogQ29ubmVjdGlvbiByZXNldCBieSBwZWVyICg1NCkifQ=="}
 
-Google 了一下，发现问题在于没有 `accept()` 的请求太多了，超过了系统默认的最大值128（这个值对于生产环境的 Web 服务器来说太小了），因此内核直接重置了连接。在基于 Kubernetes 的生产环境中，在 Pod 的 template 中加入 `"security.alpha.kubernetes.io/unsafe-sysctls": "net.core.somaxconn=4096"` 即可。（需要先配置节点上的 kubelet，允许 `net.core.somaxconn`这个 unsafe sysctl，配置方法可参考 <http://bazingafeng.com/2017/12/23/kubernetes-uses-the-security-context-and-sysctl/>）由于我在本地测试的使用使用的是 docker-compose，因此需要把这个参数加入到 `docker-compose.yml` 中：
+Google 了一下，发现问题在于没有 `accept()` 的请求太多了，超过了系统默认的最大值128（这个值对于生产环境的 Web 服务器来说太小了），因此内核直接重置了连接。在基于 Kubernetes 的生产环境中，在 Pod 的 template 中加入 `"security.alpha.kubernetes.io/unsafe-sysctls": "net.core.somaxconn=4096"` 即可。（需要先配置节点上的 kubelet，允许 `net.core.somaxconn`这个 unsafe sysctl，配置方法可参考 <http://bazingafeng.com/2017/12/23/kubernetes-uses-the-security-context-and-sysctl/>。原先我以为修改了宿主的内核参数就可以了，但是后来发现 Docker 对这个参数好像有隔离）
+
+由于我在本地测试的使用使用的是 docker-compose，因此需要把这个参数加入到 `docker-compose.yml` 中：
 
 {"widget":"qards-code","config":"eyJjb2RlIjoidmVyc2lvbjogXCIzXCJcbnNlcnZpY2VzOlxuICBldmVyeWNsYXNzLXNlcnZlcjpcbiAgICBpbWFnZTogZXZlcnljbGFzcy1zZXJ2ZXI6bGF0ZXN0XG4gICAgc3lzY3RsczpcbiAgICAtIG5ldC5jb3JlLnNvbWF4Y29ubj00MDk2XG4gICAgZW52aXJvbm1lbnQ6XG4gICAgICBNT0RFOiBERVZFTE9QTUVOVFxuICAgIHBvcnRzOlxuICAgIC0gODA6ODAiLCJsYW5ndWFnZSI6InlhbWwifQ=="}
 
-除了内核的限制之外，还有 uWSGI 本身的限制。因此，在 uWSGI 配置文件中加入：`listen = 4096`，（即监听队列长度为 4096）
+除了内核的限制之外，还有 uWSGI 本身的限制。因此，在 uWSGI 配置文件中加入：`listen = 4096`（即监听队列长度为 4096），现在启动 uWSGI 时你可以看到 your server socket listen backlog is limited to 4096 connections 的字样，表明设置成功了。（如果这个值设置的比系统最大值大，会导致 uWSGI 无法启动）
 
-1
+
+
+
+
+{"widget":"qards-section-heading","config":"eyJ0eXBlIjoicHJpbWFyeSIsInRpdGxlIjoiRGlzYWJsZSBMb2dnaW5nIn0="}
