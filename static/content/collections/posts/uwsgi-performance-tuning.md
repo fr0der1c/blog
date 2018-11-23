@@ -36,12 +36,12 @@ excerpt: >-
 我们先用这个配置跑出一个成绩作为后续调优的 baseline：
 
 ```bash
-$ ab -c 50 -n 5000 -s 90 http://127.0.0.1/_healthCheck
+$ ab -c 500 -n 5000 -s 90 http://127.0.0.1:80/_healthCheck
 ```
 
 结果如下：
 
-{"widget":"qards-code","config":"eyJjb2RlIjoiUmVxdWVzdHMgcGVyIHNlY29uZDogICAgNzI5LjY1IFsjL3NlY10gKG1lYW4pXG5UaW1lIHBlciByZXF1ZXN0OiAgICAgICA2OC41MjYgW21zXSAobWVhbilcblRpbWUgcGVyIHJlcXVlc3Q6ICAgICAgIDEuMzcxIFttc10gKG1lYW4sIGFjcm9zcyBhbGwgY29uY3VycmVudCByZXF1ZXN0cykifQ=="}
+{"widget":"qards-code","config":"eyJjb2RlIjoiUmVxdWVzdHMgcGVyIHNlY29uZDogICAgMTEwMS40NSBbIy9zZWNdIChtZWFuKVxuVGltZSBwZXIgcmVxdWVzdDogICAgICAgOTA3Ljg5NCBbbXNdIChtZWFuKVxuVGltZSBwZXIgcmVxdWVzdDogICAgICAgMC45MDggW21zXSAobWVhbiwgYWNyb3NzIGFsbCBjb25jdXJyZW50IHJlcXVlc3RzKSJ9"}
 
 {"widget":"qards-section-heading","config":"eyJ0eXBlIjoic2Vjb25kYXJ5IiwidGl0bGUiOiJEbyBub3QgdXNlIEFwYWNoZSBCZW5jaG1hcmsgb24gTWFjISJ9"}
 
@@ -69,9 +69,9 @@ $ ab -c 50 -n 5000 -s 90 http://127.0.0.1/_healthCheck
 
 我们来尝试一些邪门的小技巧吧，比如关闭 uWSGI 的访问日志。关闭它对我们不会产生多大的影响，因为生产环境中在反向代理处会有日志，而在开发环境中，无用的访问日志会淹没重要的报错信息。在 uWSGI 的配置文件中加入 `disable-logging = True` ，然后我们再来测试一下性能：
 
-{"widget":"qards-code","config":"eyJjb2RlIjoiUmVxdWVzdHMgcGVyIHNlY29uZDogICAgOTY5LjEwIFsjL3NlY10gKG1lYW4pXG5UaW1lIHBlciByZXF1ZXN0OiAgICAgICAxMDMuMTg5IFttc10gKG1lYW4pXG5UaW1lIHBlciByZXF1ZXN0OiAgICAgICAxLjAzMiBbbXNdIChtZWFuLCBhY3Jvc3MgYWxsIGNvbmN1cnJlbnQgcmVxdWVzdHMpIn0="}
+{"widget":"qards-code","config":"eyJjb2RlIjoiUmVxdWVzdHMgcGVyIHNlY29uZDogICAgMTc0Mi40MyBbIy9zZWNdIChtZWFuKVxuVGltZSBwZXIgcmVxdWVzdDogICAgICAgNjQ4LjMyNiBbbXNdIChtZWFuKVxuVGltZSBwZXIgcmVxdWVzdDogICAgICAgMC42NDggW21zXSAobWVhbiwgYWNyb3NzIGFsbCBjb25jdXJyZW50IHJlcXVlc3RzKSJ9"}
 
-老实说，在测试之前我并不太相信关闭日志会对性能造成多大的提升。但结果表明，关闭日志将性能提升了 30%。
+老实说，在测试之前我并不太相信关闭日志会对性能造成多大的提升。但结果表明，关闭日志使程序每秒钟多处理了 641 个请求。
 
 {"widget":"qards-section-heading","config":"eyJ0eXBlIjoicHJpbWFyeSIsInRpdGxlIjoiQWRkIG1vcmUgd29ya2VycyJ9"}
 
