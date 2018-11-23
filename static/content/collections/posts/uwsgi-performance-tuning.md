@@ -109,6 +109,14 @@ uWSGI 并不是只需要监听 accept() 请求，因此内核对 accept() 的防
 
 我们在 uWSGI 配置文件中添加 `thunder-lock = True`，然后再测试一次性能：
 
-（测试结果）
+{"widget":"qards-code","config":"eyJjb2RlIjoiUmVxdWVzdHMgcGVyIHNlY29uZDogICAgMTY4My4wNCBbIy9zZWNdIChtZWFuKVxuVGltZSBwZXIgcmVxdWVzdDogICAgICAgNTAxLjAyNyBbbXNdIChtZWFuKVxuVGltZSBwZXIgcmVxdWVzdDogICAgICAgMC41MDEgW21zXSAobWVhbiwgYWNyb3NzIGFsbCBjb25jdXJyZW50IHJlcXVlc3RzKSJ9"}
+
+可以看到，开启了 thunder lock 之后，性能有所恢复。
 
 {"widget":"qards-section-heading","config":"eyJ0eXBlIjoicHJpbWFyeSIsInRpdGxlIjoiTXVsdGl0aHJlYWRpbmcifQ=="}
+
+刚刚我们谈到了 Python 的 GIL，那为什么我还要在这里说多线程呢？因为你的代码实际上并不一定是 CPU-bound 的，而进程上下文切换的成本比线程高多了，所以并不一定进程开的越多越好，具体的参数还是要慢慢尝试调整。在设置了 threads = 2 后，测试出来的吞吐量反而下降了一点：
+
+{"widget":"qards-code","config":"eyJjb2RlIjoiUmVxdWVzdHMgcGVyIHNlY29uZDogICAgMTUwOC4zMiBbIy9zZWNdIChtZWFuKVxuVGltZSBwZXIgcmVxdWVzdDogICAgICAgNTU3LjAwNCBbbXNdIChtZWFuKVxuVGltZSBwZXIgcmVxdWVzdDogICAgICAgMC41NTcgW21zXSAobWVhbiwgYWNyb3NzIGFsbCBjb25jdXJyZW50IHJlcXVlc3RzKSJ9"}
+
+不过，e
