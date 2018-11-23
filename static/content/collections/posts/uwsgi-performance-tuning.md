@@ -124,3 +124,9 @@ uWSGI 并不是只需要监听 accept() 请求，因此内核对 accept() 的防
 ```
 2132.08 1325.72 1795.32 1381.67 1283.08 1399.98 1488.05
 ```
+
+
+
+{"widget":"qards-section-heading","config":"eyJ0eXBlIjoicHJpbWFyeSIsInRpdGxlIjoiQ29uY2x1c2lvbiJ9"}
+
+就如本文开头说明的一样，本次优化侧重于 uWSGI 的调优而非代码本身。其实代码里会有很多可以改进的地方，我们下一篇再谈。
