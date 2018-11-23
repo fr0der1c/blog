@@ -69,9 +69,9 @@ $ ab -c 500 -n 5000 -s 90 http://127.0.0.1:80/_healthCheck
 
 我们来尝试一些邪门的小技巧吧，比如关闭 uWSGI 的访问日志。关闭它对我们不会产生多大的影响，因为生产环境中在反向代理处会有日志，而在开发环境中，无用的访问日志会淹没重要的报错信息。在 uWSGI 的配置文件中加入 `disable-logging = True` ，然后我们再来测试一下性能：
 
-{"widget":"qards-code","config":"eyJjb2RlIjoiUmVxdWVzdHMgcGVyIHNlY29uZDogICAgMTc0Mi40MyBbIy9zZWNdIChtZWFuKVxuVGltZSBwZXIgcmVxdWVzdDogICAgICAgNjQ4LjMyNiBbbXNdIChtZWFuKVxuVGltZSBwZXIgcmVxdWVzdDogICAgICAgMC42NDggW21zXSAobWVhbiwgYWNyb3NzIGFsbCBjb25jdXJyZW50IHJlcXVlc3RzKSJ9"}
+{"widget":"qards-code","config":"eyJjb2RlIjoiUmVxdWVzdHMgcGVyIHNlY29uZDogICAgMTU0Mi40MyBbIy9zZWNdIChtZWFuKVxuVGltZSBwZXIgcmVxdWVzdDogICAgICAgNjQ4LjMyNiBbbXNdIChtZWFuKVxuVGltZSBwZXIgcmVxdWVzdDogICAgICAgMC42NDggW21zXSAobWVhbiwgYWNyb3NzIGFsbCBjb25jdXJyZW50IHJlcXVlc3RzKSJ9"}
 
-老实说，在测试之前我并不太相信关闭日志会对性能造成多大的提升。但结果表明，关闭日志使程序每秒钟多处理了 641 个请求。
+老实说，在测试之前我并不太相信关闭日志会对性能造成多大的提升。但结果表明，关闭日志使程序每秒钟多处理了 441 个请求。
 
 {"widget":"qards-section-heading","config":"eyJ0eXBlIjoicHJpbWFyeSIsInRpdGxlIjoiQWRkIG1vcmUgd29ya2VycyJ9"}
 
