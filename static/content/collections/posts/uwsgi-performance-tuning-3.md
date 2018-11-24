@@ -19,8 +19,8 @@ excerpt: >-
 ---
 如果你还没有看过上两篇文章，建议你先阅读：
 
-* <https://blog.admirable.pro/posts/uwsgi-performance-tuning/>
-* <https://blog.admirable.pro/posts/uwsgi-performance-tuning-2/>
+* [我如何对 uWSGI 进行性能调优（1）：快速参数调整](https://blog.admirable.pro/posts/uwsgi-performance-tuning/)
+* [我如何对 uWSGI 进行性能调优（2）：设定 worker 数量](https://blog.admirable.pro/posts/uwsgi-performance-tuning-2/)
 
 {"widget":"qards-divider","config":"eyJ0eXBlIjoiYnVsbGV0cyJ9"}
 
