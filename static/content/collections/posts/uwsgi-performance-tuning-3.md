@@ -55,4 +55,4 @@ excerpt: >-
 
 {"widget":"qards-section-heading","config":"eyJ0eXBlIjoicHJpbWFyeSIsInRpdGxlIjoiVXNpbmcgZ2V2ZW50IGluIGZsYXNrIn0="}
 
-考虑到我们已经在使用 flask 了，我们当然不会通过更换 web 框架的方式来解决问题。
+考虑到我们已经在使用 flask 了，我们当然不会通过更换 web 框架的方式来解决问题。那么，gevent 看起来是个不错的选择。
