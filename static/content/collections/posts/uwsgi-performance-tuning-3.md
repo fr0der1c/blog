@@ -5,6 +5,8 @@ tags:
   - uWSGI
   - web
   - Python
+  - coroutine
+  - performance
 authors: Frederic Chan
 categories: Python
 meta:
