@@ -12,7 +12,7 @@ meta:
 isPage: false
 isFeatured: false
 hero:
-  image: /images/uploads/marko-blazevic-219788-unsplash.jpg
+  image: /images/uploads/uwsgi_logo.png
 excerpt: >-
   在上一篇文章中，我们谈到了 uWSGI worker
   的数量需要根据配置进行测试、精细调整，而不能拍脑门定一个数字。在这篇文章中，我会结合自己尝试的经历解释其中的原因。
