@@ -19,8 +19,19 @@ excerpt: >-
 ---
 todo
 
+{"widget":"qards-section-heading","config":"eyJ0eXBlIjoicHJpbWFyeSIsInRpdGxlIjoiVGhlIGxhenktYXBwIG9wdGlvbiJ9"}
+
+{"widget":"qards-section-heading","config":"eyJ0eXBlIjoicHJpbWFyeSIsInRpdGxlIjoiTWVtb3J5IHR1bmluZyBhdCBJbnN0YWdyYW0ifQ=="}
+
 Instagram 作为可能是世界上最大规模的（基于 django 的） Python Web 项目，在内存优化方面有不少尝试。我参看了他们的几篇文章：
 
 * [Copy-on-write friendly Python garbage collection](https://instagram-engineering.com/copy-on-write-friendly-python-garbage-collection-ad6ed5233ddf)
 * [Dismissing Python Garbage Collection at Instagram](https://instagram-engineering.com/dismissing-python-garbage-collection-at-instagram-4dca40b29172)
 
+{"widget":"qards-section-heading","config":"eyJ0eXBlIjoicHJpbWFyeSIsInRpdGxlIjoiTXkgdHJpYWwifQ=="}
+
+11
+
+
+
+{"widget":"qards-section-heading","config":"eyJ0eXBlIjoicHJpbWFyeSIsInRpdGxlIjoiQ29uY2x1c2lvbiJ9"}
