@@ -17,7 +17,7 @@ hero:
   image: /images/uploads/marko-blazevic-219788-unsplash.jpg
 excerpt: >-
   在上一篇文章中，我们谈到了不能随意设置 uWSGI worker 数量的原因，并通过实验大致推算出了在 CPU-bound 的程序中 worker
-  的最佳数量。在这篇文章中，我们将使用协程（coroutine）来优化 IO-bound 时的情况。
+  的最佳数量。然而真实的环境中并不总是 CPU-bound 的，因此今天我们将使用协程（ coroutine ）来优化 IO-bound 时的情况。
 ---
 如果你还没有看过之前的两篇文章，建议你先阅读：
 
@@ -28,5 +28,8 @@ excerpt: >-
 
 {"widget":"qards-callout","config":"eyJpbnRlbnQiOiJ3YXJuaW5nIiwidGl0bGUiOiJOb3RpY2UiLCJtZXNzYWdlIjoiVGhpcyBhcnRpY2xlIGlzIG5vdCBmaW5pc2hlZCB5ZXQuIFBsZWFzZSBjb21lIGJhY2sgbGF0ZXIuIn0="}
 
+{"widget":"qards-section-heading","config":"eyJ0aXRsZSI6IldoeSB3ZSBuZWVkIGl0PyIsInR5cGUiOiJwcmltYXJ5In0="}
+
 什么是协程？
-todo
+
+{"widget":"qards-section-heading","config":"eyJ0aXRsZSI6IkhvdyB0byB1c2UgY29yb3V0aW5lIGluIGZsYXNrIGFwcCJ9"}
