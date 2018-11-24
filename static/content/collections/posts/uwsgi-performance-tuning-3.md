@@ -44,10 +44,15 @@ excerpt: >-
 
 那么协程如何解决这个问题呢？我们可以通过协程实现异步的 IO，即对于每一个线程来说，在自己 IO 时不再等待 IO 结果，而是先去处理新来的请求，等 IO 完成了再跳回到需要等待 IO 的这段代码。通过这种方式，我们充分利用了程序中的每一个线程，让它们永远有事可做。虽然这种方式对单个请求的性能并没有提升（甚至可能还有下降），但协程对 IO 操作非常多的应用服务器的吞吐量提升是巨大的。
 
-
-
 {"widget":"qards-section-heading","config":"eyJ0aXRsZSI6IkhvdyB0byB1c2UgY29yb3V0aW5lIGluIFB5dGhvbiIsInR5cGUiOiJwcmltYXJ5In0="}
 
 在 Python 中使用协程不止一种方法。
 
+* 你可以使用 **yield** 关键字来实现一个最简陋的协程
+* 你可以使用 **greenlet** 包，调用 switch() 方法来在多个子程序之间切换
+* 你可以使用 **gevent** 库，在应用了 gevent 的猴子补丁之后，gevent 会主动识别程序内部的 IO 操作。当子程序遇到 IO 后，切换到别的子程序。如果所有的子程序都进入 IO，则阻塞
+* 甚至还有 **tornado** 这样天生强调协程的 web 框架
+
 {"widget":"qards-section-heading","config":"eyJ0eXBlIjoicHJpbWFyeSIsInRpdGxlIjoiVXNpbmcgZ2V2ZW50IGluIGZsYXNrIn0="}
+
+考虑到我们已经在使用 flask 了，我们当然不会通过更换 web 框架的方式来解决问题。
