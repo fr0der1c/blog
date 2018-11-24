@@ -14,8 +14,9 @@ isFeatured: false
 hero:
   image: /images/uploads/python_coroutine.png
 excerpt: >-
-  最近把所有服务迁移到 Kubernetes 之后，终于可以直观地通过可视化面板观察各个容器的资源使用情况了。在看内存占用的时候发现自己写的 Python
-  Web 项目一启动就要占用 200MB 左右内存，有点偏高，于是尝试优化一下。
+  最近把所有服务迁移到 Kubernetes 之后，终于可以直观地通过可视化面板观察容器的资源使用情况了。在看的时候发现自己写的 Python Web
+  项目一启动就要占用 200MB 左右内存，有点偏高，于是尝试优化。这篇文章牵涉到 Python 中的
+  CoW，目前中文互联网上没有什么资料，所以自己填补一下这个空白。
 ---
 todo
 
@@ -31,7 +32,5 @@ Instagram 作为可能是世界上最大规模的（基于 django 的） Python 
 {"widget":"qards-section-heading","config":"eyJ0eXBlIjoicHJpbWFyeSIsInRpdGxlIjoiTXkgdHJpYWwifQ=="}
 
 11
-
-
 
 {"widget":"qards-section-heading","config":"eyJ0eXBlIjoicHJpbWFyeSIsInRpdGxlIjoiQ29uY2x1c2lvbiJ9"}
