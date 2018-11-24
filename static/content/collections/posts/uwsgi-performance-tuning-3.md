@@ -28,8 +28,10 @@ excerpt: >-
 
 {"widget":"qards-callout","config":"eyJpbnRlbnQiOiJ3YXJuaW5nIiwidGl0bGUiOiJOb3RpY2UiLCJtZXNzYWdlIjoiVGhpcyBhcnRpY2xlIGlzIG5vdCBmaW5pc2hlZCB5ZXQuIFBsZWFzZSBjb21lIGJhY2sgbGF0ZXIuIn0="}
 
-{"widget":"qards-section-heading","config":"eyJ0aXRsZSI6IldoeSB3ZSBuZWVkIGl0PyIsInR5cGUiOiJwcmltYXJ5In0="}
+{"widget":"qards-section-heading","config":"eyJ0aXRsZSI6IldoYXQgaXMgY29yb3V0aW5lPyIsInR5cGUiOiJwcmltYXJ5In0="}
 
-什么是协程？
+在使用协程对我们的程序进行优化之前，我们先来了解一下什么是协程。
+
+{"widget":"qards-section-heading","config":"eyJ0aXRsZSI6IldoeSB3ZSBuZWVkIGl0PyIsInR5cGUiOiJzZWNvbmRhcnkifQ=="}
 
 {"widget":"qards-section-heading","config":"eyJ0aXRsZSI6IkhvdyB0byB1c2UgY29yb3V0aW5lIGluIGZsYXNrIGFwcCJ9"}
