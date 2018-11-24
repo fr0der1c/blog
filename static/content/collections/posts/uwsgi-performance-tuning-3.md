@@ -14,7 +14,7 @@ meta:
 isPage: false
 isFeatured: false
 hero:
-  image: /images/uploads/marko-blazevic-219788-unsplash.jpg
+  image: /images/uploads/python_coroutine.png
 excerpt: >-
   在上一篇文章中，我们谈到了不能随意设置 uWSGI worker 数量的原因，并通过实验大致推算出了在 CPU-bound 的程序中 worker
   的最佳数量。然而真实的环境中并不总是 CPU-bound 的，因此今天我们将使用协程（ coroutine ）来优化 IO-bound 时的情况。
