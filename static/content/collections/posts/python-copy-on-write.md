@@ -14,7 +14,8 @@ isFeatured: false
 hero:
   image: /images/uploads/python_coroutine.png
 excerpt: >-
-  最近把所有服务迁移到 Kubernetes 之后，终于可以直观地通过可视化面板观察各个容器的资源使用情况了。在看内存占用的时候发现 自己写的 Python Web 项目访问量也不是特别大，但是内存占用还是有点高（200M左右），于是尝试优化一下。
+  最近把所有服务迁移到 Kubernetes 之后，终于可以直观地通过可视化面板观察各个容器的资源使用情况了。在看内存占用的时候发现自己写的 Python
+  Web 项目一启动就要占用 200MB 左右内存，有点偏高，于是尝试优化一下。
 ---
 
 todo
