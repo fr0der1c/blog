@@ -8,7 +8,7 @@ categories: Python
 meta:
   keywords: hello world
 isPage: true
-isFeatured: false
+isFeatured: true
 hero:
   image: /images/uploads/andrew-ridley-76547-unsplash.jpg
 excerpt: This is a test article
