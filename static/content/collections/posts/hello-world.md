@@ -7,7 +7,7 @@ authors: Frederic Chan
 categories: Python
 meta:
   keywords: hello world
-isPage: false
+isPage: true
 isFeatured: false
 hero:
   image: /images/uploads/andrew-ridley-76547-unsplash.jpg
