@@ -4,7 +4,7 @@ created_at: 2018-11-07T14:43:21.767Z
 tags:
   - Elasticsearch
 authors: Frederic Chan
-categories: OP
+categories: Operation
 meta:
   keywords: elasticsearch op
 isPage: false
