@@ -12,7 +12,7 @@ meta:
 isPage: false
 isFeatured: false
 hero:
-  image: /images/uploads/python_coroutine.png
+  image: /images/uploads/python_coroutine_2.png
 excerpt: >-
   最近把所有服务迁移到 Kubernetes 之后，终于可以直观地通过可视化面板观察容器的资源使用情况了。在看的时候发现自己写的 Python Web
   项目一启动就要占用 250MB 左右内存，感觉有点偏高，于是尝试优化。这篇文章牵涉到 Linux 的 CoW 在 Python
