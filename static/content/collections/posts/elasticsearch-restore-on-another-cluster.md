@@ -10,7 +10,7 @@ meta:
 isPage: false
 isFeatured: false
 hero:
-  image: /images/uploads/key-3348307_1280.jpg
+  image: /images/uploads/elsaticsearch_logo.png
 excerpt: 最近需要把一个 ES 集群的数据迁移到另一个 ES 集群。写篇文章简要记录一下备份恢复的过程。
 ---
 1. 在 `elasticsearch.yml` 中新增 `path.repo: ["/var/backups"]`，其中 `/var/backups` 为你想要备份到的目录，需要先手动创建。然后重启 ES
