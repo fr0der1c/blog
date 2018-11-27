@@ -1,7 +1,7 @@
 {
   "name": "Blog",
-  "title": "Blog as a admirable professional - technical blog by Frederic Chan",
-  "excerpt": "Python, distributed system, and DevOps",
+  "title": "Blog as a Admirable Professional - Technical Blog by Frederic Chan",
+  "excerpt": "Python, Web development, distributed system, DevOps and infrastructure",
   "baseUrl": "https://blog.admirable.pro",
   "performanceMode": false,
   "logo": "/images/uploads/logo.png",
