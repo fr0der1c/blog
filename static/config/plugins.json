@@ -1,8 +1,8 @@
 {
   "tracking": {
-    "enable": false,
+    "enable": true,
     "analytics": {
-      "trackingId": ""
+      "trackingId": "UA-129879944-1"
     }
   },
   "emailSubscribers": {
