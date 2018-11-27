@@ -1,6 +1,6 @@
 ---
 title: SSL/TLS 配置优化的若干建议
-created_at: 2018-11-30T14:43:21.767Z
+created_at: 2018-01-27T14:43:21.767Z
 tags:
   - Security
   - SSL
@@ -14,8 +14,9 @@ isFeatured: false
 hero:
   image: /images/uploads/python_coroutine_2.png
 excerpt: >-
-  “如果你配置SSL只是为了网站的网址前有一把锁的标志，那不如直接送你把锁好了”。别想了，这句话不是哪个安全专家说的，是我说的（逃）今天写一篇文章记录一下自己
-  SSL 的配置优化过程。
+  “如果你配置 SSL
+  只是为了网站的网址前有一把锁的标志，那不如直接送你把锁好了”。别想了，这句话不是哪个安全专家说的，是我说的（逃）今天写一篇文章记录一下自己 SSL
+  的配置优化过程。
 ---
 以下设置均为 Nginx 的配置。
 
