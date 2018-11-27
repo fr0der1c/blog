@@ -11,6 +11,8 @@ isPage: true
 isFeatured: false
 hero:
   image: /images/uploads/andrew-ridley-76547-unsplash.jpg
-excerpt: This is a test article
+excerpt: 博主的个人简介
 ---
-This is a test article
+Frederic Chan，中南大学大三学生，中南大学校内知名（日均 PV 1000+，总访问量百万）课表应用“每课”创始人，前字节跳动后端实习生。正在找实习，欢迎 HR 联系。
+
+邮件：frederic.t.chan@gmail.com
