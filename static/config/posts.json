@@ -1,6 +1,6 @@
 {
   "frontLimit": "10",
-  "progressShow": true,
+  "progressShow": false,
   "tocShow": true,
   "socialShow": true,
   "subscribeShow": true,
