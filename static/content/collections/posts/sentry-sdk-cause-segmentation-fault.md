@@ -2,7 +2,6 @@
 title: Sentry SDK 导致 Python 出现段异常
 created_at: 2018-11-29T14:43:21.767Z
 tags:
-  - memory
   - Python
   - Sentry
   - Alpine
@@ -52,4 +51,4 @@ excerpt: >-
 
 把基镜像改为 Debian 并不是十分困难，基本上就是把 `apk add` 命令替换成 `apt-get install` 命令，然后替换个别包名。值得一提的是，我使用的基镜像是 `python:3.7.1-slim-stretch`，大小为 143MB，而我的应用镜像最终大小为 454MB。作为对比，原先使用 Alpine 时，最终镜像大小仅为 100MB 左右。
 
-值得欣喜的是，在把基镜像从 Alpine 换到 Debian (Stretch Slim) 之后，确实没有再报段异常了。虽然镜像的体积增大了数倍，但C语言库引起的兼容性问题终于解决了。
+值得欣喜的是，在把基镜像从 Alpine 换到 Debian (Stretch Slim) 之后，确实没有再报段异常了。虽然镜像的体积增大了数倍，但 C 语言库引起的兼容性问题终于解决了。Moreover，兼容性并不是切换到 Debian 带来的唯一福利，事实上，你的程序还可能出现一定幅度的性能提升（参见 [Benchmarking Debian vs Alpine as a Base Docker Image](https://nickjanetakis.com/blog/benchmarking-debian-vs-alpine-as-a-base-docker-image)）。看来，一位追求镜像的体积小是会有风险的，尤其是你不可能对整个程序的所有代码面面俱到地掌握的情况下。
