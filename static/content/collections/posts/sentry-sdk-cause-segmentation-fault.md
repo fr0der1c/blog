@@ -55,6 +55,6 @@ excerpt: >-
 
 {"widget":"qards-section-heading","config":"eyJ0eXBlIjoicHJpbWFyeSIsInRpdGxlIjoiQ29uY2x1c2lvbiJ9"}
 
-通过将基镜像从 Alpine 切换到 Debian，我们成功解决了 `musl` 带来的兼容性问题。更重要的是，兼容性并不是切换到 Debian 带来的唯一福利.事实上，你的程序还可能出现一定幅度的性能提升（参见 [Benchmarking Debian vs Alpine as a Base Docker Image](https://nickjanetakis.com/blog/benchmarking-debian-vs-alpine-as-a-base-docker-image)）。
+通过将基镜像从 Alpine 切换到 Debian，我们成功解决了 `musl` 带来的兼容性问题。更重要的是，兼容性并不是切换到 Debian 带来的唯一福利。事实上，你的程序还可能出现一定幅度的性能提升（参见 [Benchmarking Debian vs Alpine as a Base Docker Image](https://nickjanetakis.com/blog/benchmarking-debian-vs-alpine-as-a-base-docker-image)）。
 
 当然，如果执意使用 Alpine，或许也能解决问题。但是考虑到时间效率的平衡，以及未来可能继续出现的兼容性问题，我还是决定不折腾 Alpine 了。看来，一味追求镜像的体积小是会有风险的，尤其是你不可能对整个程序的所有代码面面俱到地掌握（这对于 Python 程序员来说不太可能）的情况下。
