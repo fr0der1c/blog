@@ -51,3 +51,5 @@ excerpt: >-
 在 Python 官方 Docker Hub 页面中，有两种 Linux 基镜像可选，一种基于 Alpine，一种基于 Debian。 使用 Alpine 很好理解，因为它足够轻量，适宜运行在容器中，在 Docker 社区中非常流行。而另一种使用 Debian 就有一点难以理解了。我试图寻找官方选择 Debian 而不是其他 Linux 发行版的理由，但发现目前没有相关的讨论。Anyway, we'll give Debian a shot.
 
 把基镜像改为 Debian 并不是十分困难，基本上就是把 `apk add` 命令替换成 `apt-get install` 命令，然后替换个别包名。值得一提的是，我使用的基镜像是 `python:3.7.1-slim-stretch`，大小为 143MB，而我的应用镜像最终大小为 454MB。作为对比，原先使用 Alpine 时，最终镜像大小仅为 100MB 左右。
+
+值得欣喜的是，在把基镜像从 Alpine 换到 Debian (Stretch Slim) 之后，确实没有再报段异常了。虽然镜像的体积增大了数倍，但C语言库引起的兼容性问题终于解决了。
