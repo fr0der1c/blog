@@ -5,6 +5,8 @@ tags:
   - memory
   - Python
   - tuning
+  - Copy on Write
+  - Linux
 authors: Frederic Chan
 categories: Python
 meta:
