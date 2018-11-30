@@ -60,7 +60,7 @@ Linux 的 Copy-on-Write （写时复制）是一个给 fork 出的进程提供�
 
 除此之外，垃圾回收（GC）机制会使用链表将对象连接起来，在进行垃圾回收时，链表会被打乱。因为链表的结构（像引用计数一样）也存储在对象的数据结构中，打乱链表中的对象也会导致页面被 CoW。
 
-考虑到 GC 时被 CoW 的问题仅存在于 master 中创建然后被 workers 共享的对象中，Instagram 团队尝试让这些共享的对象对 GC 机制不可见。 他们在 Python 的 GC 模块中加入了 gc.freeze() 方法，将对象从 Python 内部维护的用于垃圾回收的链表中去除，并将这一更新推送到了 Python 社区（https://github.com/python/cpython/pull/3705 ）。这一 API 将在 Python3.7 之后可用。 
+考虑到 GC 时被 CoW 的问题仅存在于 master 中创建然后被 workers 共享的对象中，Instagram 团队尝试让这些共享的对象对 GC 机制不可见。 他们在 Python 的 GC 模块中加入了 gc.freeze() 方法，将对象从 Python 内部维护的用于垃圾回收的链表中去除，并将这一更新推送到了 Python 社区（https://github.com/python/cpython/pull/3705 ）。这一 API 将在 Python 3.7 之后可用。 
 
 {"widget":"qards-section-heading","config":"eyJ0eXBlIjoicHJpbWFyeSIsInRpdGxlIjoiVHVuaW5nIEdhcmJhZ2UgQ29sbGVjdGlvbiJ9"}
 
