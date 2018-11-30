@@ -66,6 +66,16 @@ Linux 的 Copy-on-Write （写时复制）是一个给 fork 出的进程提供�
 
 那么，我们开始进行实际操作吧。
 
-首先升级到 Python 3.7，
+首先升级到 Python 3.7，然后查看 gc.freeze() 的用法：
+
+Freeze all the objects tracked by gc - move them to a permanent generation and ignore all the future collections. This can be used before a POSIX fork() call to make the gc copy-on-write friendly or to speed up collection. Also collection before a POSIX fork() call may free pages for future allocation which can cause copy-on-write too so **it’s advised to disable gc in master process and freeze before fork and enable gc in child process**.
+
+于是在我们程序的入口：
+
+{"widget":"qards-code","config":"eyJjb2RlIjoiaW1wb3J0IGdjXG5cbmZyb20gc2VydmVyIGltcG9ydCBjcmVhdGVfYXBwXG5cbmFwcCA9IGNyZWF0ZV9hcHAoKVxuXG4jIGRpc2FibGUgZ2MgYW5kIGZyZWV6ZVxuZ2Muc2V0X3RocmVzaG9sZCgwKVxuZ2MuZnJlZXplKCkiLCJsYW5ndWFnZSI6InB5dGhvbiJ9"}
+
+然后在子进程中开启 GC：
+
+{"widget":"qards-code","config":"eyJjb2RlIjoiaW1wb3J0IHV3c2dpZGVjb3JhdG9yc1xuXG5AdXdzZ2lkZWNvcmF0b3JzLnBvc3Rmb3JrXG5kZWYgZW5hYmxlX2djKCk6XG4gICAgXCJcIlwiZW5hYmxlIGdhcmJhZ2UgY29sbGVjdGlvblwiXCJcIlxuICAgIGdjLnNldF90aHJlc2hvbGQoNzAwKSIsImxhbmd1YWdlIjoicHl0aG9uIn0="}
 
 {"widget":"qards-section-heading","config":"eyJ0eXBlIjoicHJpbWFyeSIsInRpdGxlIjoiQ29uY2x1c2lvbiJ9"}
