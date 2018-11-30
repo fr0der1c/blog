@@ -39,7 +39,7 @@ uWSGI 有一个选项叫做 lazy-apps，它控制的是加载 WSGI app 和 fork(
 
 {"widget":"qards-code","config":"eyJjb2RlIjoicHJvY2Vzc2VzID0gNlxuY2hlYXBlciA9IDNcbmNoZWFwZXItYWxnbyA9IGJhY2tsb2ciLCJsYW5ndWFnZSI6ImluaSJ9"}
 
-其中，processes 代表最大的 worker 数，cheaper 代表最小的 worker 数，cheaper-algo 是判断是否需要增加 worker 数的算法，具体可以参看官方文档：https://uwsgi-docs.readthedocs.io/en/latest/Cheaper.html 。
+其中，processes 代表最大的 worker 数，cheaper 代表最小的 worker 数，cheaper-algo 是判断是否需要增加 worker 数的算法，具体可以参看官方文档： https://uwsgi-docs.readthedocs.io/en/latest/Cheaper.html 。
 
 {"widget":"qards-section-heading","config":"eyJ0eXBlIjoicHJpbWFyeSIsInRpdGxlIjoiUHl0aG9uIHdpdGggQ29weS1vbi1Xcml0ZSJ9"}
 
@@ -57,8 +57,6 @@ Linux 的 Copy-on-Write （写时复制）是一个给 fork 出的进程提供�
 {"widget":"qards-code","config":"eyJjb2RlIjoiI2RlZmluZSBQeU9iamVjdF9IRUFEICAgICAgICAgICAgICAgICAgIFxcXG4gICAgX1B5T2JqZWN0X0hFQURfRVhUUkEgICAgICAgICAgICAgICAgXFxcbiAgICBQeV9zc2l6ZV90IG9iX3JlZmNudDsgICAgICAgICAgICAgICBcXFxuICAgIHN0cnVjdCBfdHlwZW9iamVjdCAqb2JfdHlwZTtcbi4uLlxudHlwZWRlZiBzdHJ1Y3QgX29iamVjdCB7XG4gICAgUHlPYmplY3RfSEVBRFxufSBQeU9iamVjdDsiLCJsYW5ndWFnZSI6IkMifQ=="}
 
 更加不幸的是，即使是不可变的对象，比如代码（PyCodeObject）也是 PyObject 的“子类”。所以也会有“读时复制”。
-
-
 
 {"widget":"qards-section-heading","config":"eyJ0eXBlIjoicHJpbWFyeSIsInRpdGxlIjoiVHVuaW5nIEdhcmJhZ2UgQ29sbGVjdGlvbiJ9"}
 
