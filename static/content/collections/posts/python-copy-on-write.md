@@ -2,11 +2,11 @@
 title: Python Web 内存调优，以及 Python 中的 Copy-on-Write
 created_at: 2018-11-30T14:43:21.767Z
 tags:
-  - memory
   - Python
+  - memory
   - tuning
-  - Copy on Write
   - Linux
+  - Copy on Write
 authors: Frederic Chan
 categories: Python
 meta:
