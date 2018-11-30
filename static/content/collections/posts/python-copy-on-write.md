@@ -39,7 +39,7 @@ uWSGI 有一个选项叫做 lazy-apps，它控制的是加载 WSGI app 和 fork(
 
 {"widget":"qards-code","config":"eyJjb2RlIjoicHJvY2Vzc2VzID0gNlxuY2hlYXBlciA9IDNcbmNoZWFwZXItYWxnbyA9IGJhY2tsb2ciLCJsYW5ndWFnZSI6ImluaSJ9"}
 
-其中，processes 代表最大的 worker 数，cheaper 代表最小的 worker 数，cheaper-algo 是判断是否需要增加 worker 数的算法，具体可以参看官方文档。
+其中，processes 代表最大的 worker 数，cheaper 代表最小的 worker 数，cheaper-algo 是判断是否需要增加 worker 数的算法，具体可以参看官方文档：https://uwsgi-docs.readthedocs.io/en/latest/Cheaper.html 。
 
 {"widget":"qards-section-heading","config":"eyJ0eXBlIjoicHJpbWFyeSIsInRpdGxlIjoiUHl0aG9uIHdpdGggQ29weS1vbi1Xcml0ZSJ9"}
 
