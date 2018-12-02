@@ -79,3 +79,5 @@ Freeze all the objects tracked by gc - move them to a permanent generation and i
 {"widget":"qards-code","config":"eyJjb2RlIjoiaW1wb3J0IHV3c2dpZGVjb3JhdG9yc1xuXG5AdXdzZ2lkZWNvcmF0b3JzLnBvc3Rmb3JrXG5kZWYgZW5hYmxlX2djKCk6XG4gICAgXCJcIlwiZW5hYmxlIGdhcmJhZ2UgY29sbGVjdGlvblwiXCJcIlxuICAgIGdjLnNldF90aHJlc2hvbGQoNzAwKSIsImxhbmd1YWdlIjoicHl0aG9uIn0="}
 
 {"widget":"qards-section-heading","config":"eyJ0eXBlIjoicHJpbWFyeSIsInRpdGxlIjoiQ29uY2x1c2lvbiJ9"}
+
+在这篇文章中我们谈到了 CoW 机制在 Python 中的特殊性，并通过 Python 3.7 的新 API 对程序进行优化。效果有待进一步检验。
