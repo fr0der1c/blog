@@ -19,6 +19,8 @@ excerpt: >-
   在上一篇文章中，我们谈到了不能随意设置 uWSGI worker 数量的原因，并通过实验大致推算出了在 CPU-bound 的程序中 worker
   的最佳数量。然而真实的环境中并不总是 CPU-bound 的，因此今天我们将使用协程（ coroutine ）来优化 IO-bound 时的情况。
 ---
+
+
 如果你还没有看过之前的两篇文章，建议你先阅读：
 
 * [我如何对 uWSGI 进行性能调优（1）：快速参数调整](https://blog.admirable.pro/posts/uwsgi-performance-tuning/)
@@ -53,14 +55,27 @@ excerpt: >-
 * 你可以使用 **gevent** 库，在应用了 gevent 的猴子补丁之后，gevent 会主动识别程序内部的 IO 操作。当子程序遇到 IO 后，切换到别的子程序。如果所有的子程序都进入 IO，则阻塞
 * 甚至还有 **tornado** 这样天生强调协程的 web 框架
 
-{"widget":"qards-section-heading","config":"eyJ0eXBlIjoicHJpbWFyeSIsInRpdGxlIjoiVXNpbmcgZ2V2ZW50IGluIGZsYXNrIn0="}
+{"widget":"qards-section-heading","config":"eyJ0eXBlIjoicHJpbWFyeSIsInRpdGxlIjoiUG93ZXIgb2YgZ2V2ZW50In0="}
 
 考虑到我们已经在使用 flask 了，我们当然不会通过更换 web 框架的方式来解决问题。那么，gevent 看起来是个不错的选择。
 
-（测试基准性能）
+为了展示协程的威力，我们来做个测试。在 Flask 中添加如下代码：
 
-（应用 gevent）
+{"widget":"qards-code","config":"eyJjb2RlIjoiQG1haW5fYmx1ZXByaW50LnJvdXRlKCcvc2xlZXAnKVxuZGVmIHNsZWVwKCk6XG4gICAgdGltZS5zbGVlcCg2MClcbiAgICByZXR1cm4gcmVuZGVyX3RlbXBsYXRlKCdpbmRleC5odG1sJykiLCJsYW5ndWFnZSI6InB5dGhvbiJ9"}
 
-（测试性能）
+我们用 time.sleep 模拟耗时的 IO 操作，在非协程的模式下，我们设置了 6 个 worker。然后我们访问 6 次 /sleep，再尝试访问首页。这时你会发现首页已经无法打开了，因为我们的 6 个 worker 全部在等待耗时的操作，没有空闲的 worker 来处理新的请求。
 
-（检查有没有 monkey patch 遗漏了的）
+然后我们加入协程：
+
+* 在 uwsgi 配置文件中增加 gevent = 100
+* 在程序最前面增加 from gevent import monkey; monkey.patch_all()
+
+之后访问多次 /sleep 再尝试进行其他请求，可以发现其他请求并没有被阻塞。这说明协程在发挥作用了。
+
+
+
+{"widget":"qards-section-heading","config":"eyJ0eXBlIjoicHJpbWFyeSIsInRpdGxlIjoiTm90aWNlIG9uIHVXU0dJIn0="}
+
+请务必注意，如果你的 uWSGI 是自己编译的（官方称之为 modular build），你需要在 uwsgi.ini 中加入 python 和 gevent 两个插件。如果只加入 python 插件，不会报错，但此时仍是阻塞的 IO，这个问题坑了我好几天。
+
+推荐的方法是 pip install uwsgi，通过这种方式编译的 uWSGI 自带了 python 相关插件，无需手动导入 gevent 插件。
