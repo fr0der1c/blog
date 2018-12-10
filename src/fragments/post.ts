@@ -10,11 +10,12 @@ export interface PostType {
 
 	frontmatter: {
 		isPage: boolean;
+		isFeatured: boolean;
+		showAuthor: boolean;
 		title: string;
 		excerpt: string;
 		created_at: string;
 		tags: string[];
-
 		hero: PageHeroType;
 		meta: PageMetaType;
 	}
@@ -26,7 +27,6 @@ export interface PostType {
 	fields: {
 		slug: string;
 
-
 		audios: {
 			url: string;
 			title: string;
@@ -34,7 +34,7 @@ export interface PostType {
 			poster?: {
 				image: CardImageType;
 			}
-		}[]
+		}[];
 
 		galleries: {
 			alt: string;
@@ -42,7 +42,15 @@ export interface PostType {
 				fileName: string;
 				image: CardImageType;
 			};
-		}[]
+		}[];
+
+		images: {
+			alt: string;
+			image: {
+				fileName: string;
+				image: CardImageType;
+			};
+		}[];
 	}
 }
 
@@ -64,6 +72,10 @@ export const _ = graphql`
 			excerpt
 			created_at(formatString: "MMMM DD, YYYY")
 			tags
+			
+			showAuthor
+			isPage
+			isFeatured
 			
 			meta{
 				keywords
@@ -156,6 +168,23 @@ export const _ = graphql`
 			}
 			
 			galleries: qardsGallery{
+				alt
+				image: src {
+					fileName: name
+					image: childImageSharp{
+						fluid(maxWidth: 2900) {
+							tracedSVG
+							aspectRatio
+							originalImg
+							src
+							srcSet
+							sizes
+						}
+					}
+				}
+			}
+			
+			images: image {
 				alt
 				image: src {
 					fileName: name
