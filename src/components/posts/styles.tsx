@@ -8,7 +8,7 @@ export const Wrapper = styled.div`
     &.darktheme {
         h3 {
             font-weight: 200;
-            color: ${theme.color(["primary", "text"])};
+            color: ${theme.color(["primary", "background"])};
         }
         
         .post-card {
@@ -53,6 +53,8 @@ export const Wrapper = styled.div`
 			}
         }
     }
+    
+    padding: 60px 0;
     
     h3 {
         text-align: center;

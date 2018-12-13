@@ -22,7 +22,6 @@ const Wrapper = styled.div`
 			${theme.color(["accent", "background"])} 56%,
 			${theme.color((["accent", "background"]))} 100%
 		);
-		padding: 80px 0;
 	}
 	
 	&.performance {

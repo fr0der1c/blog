@@ -1,3 +1,5 @@
+import PostsSettings from '../../../static/config/posts.json';
+
 export const settingsCollection = {
 	name  : 'settings',
 	label : 'Settings',
@@ -50,14 +52,14 @@ export const settingsCollection = {
 			name  : 'socialShareImg',
 			widget: 'image',
 		}, {
-			label  : 'Editorial mode?',
-			name   : 'editorialMode',
-			widget : 'boolean',
-			hint   : `The editorial mode option allows you to enable "Editorial Workflow" 
+			label   : 'Editorial mode?',
+			name    : 'editorialMode',
+			widget  : 'boolean',
+			hint    : `The editorial mode option allows you to enable "Editorial Workflow" 
 			mode for more control over the content publishing phases. All unpublished 
 			entries will be arranged in a board according to their status, and they 
 			can be further reviewed and edited before going live.`,
-			default: false,
+			default : false,
 			required: false,
 		}],
 	}, {
@@ -277,6 +279,15 @@ export const settingsCollection = {
 			default: true,
 			hint   : `If true, the post excerpts will be shown when
 			displaying post results (cards)`,
+		}, {
+			label   : 'Slug structure',
+			name    : 'slugStructure',
+			widget  : 'string',
+			hint    : `Allows you to fine tune the structure and details present in the
+			posts slug. The available tokens are can be found on netlify-cms documentation
+			page: https://www.netlifycms.org/docs/configuration-options/#slug`,
+			default : '{{slug}}',
+			required: true,
 		}],
 	}, {
 		name  : 'plugins',
@@ -448,7 +459,7 @@ export const postsCollection = {
 	label_singular: 'Post',
 	folder        : 'static/content/collections/posts',
 	create        : true,
-	slug          : '{{slug}}',
+	slug          : PostsSettings.slugStructure,
 	sort          : 'created_at:desc',
 	fields        : [{
 		label : 'Title',
