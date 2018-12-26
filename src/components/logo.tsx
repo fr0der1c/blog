@@ -3,7 +3,7 @@ import {graphql, Link, StaticQuery} from 'gatsby';
 import Img from 'gatsby-image';
 
 import LazyLoad from 'react-lazyload';
-import {Box, Flex} from 'grid-styled';
+import {Box, Flex} from '@rebass/grid';
 import styled from 'styled-components';
 import {HTMLDivProps} from '@blueprintjs/core/src/common/props';
 
@@ -53,7 +53,7 @@ export default class Logo extends React.Component<Props & HTMLDivProps, any> {
 			<StaticQuery
 				query={graphql`
 					query {
-						logo: allFile(filter: {absolutePath: {regex: "/images\/uploads\/logo\\.(jpg|png)/"}}) {
+						logo: allFile(limit: 1, filter: {absolutePath: {regex: "/images\/uploads\/logo\\.(jpg|png)/"}}) {
 							edges {
 								node {
 									thumb: childImageSharp {

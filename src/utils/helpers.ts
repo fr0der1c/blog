@@ -1,29 +1,16 @@
 import _ from 'lodash';
 import rTime from 'reading-time';
 import {PostType} from '../fragments/post';
-import moment from 'moment';
 import {CategoryType} from '../templates/category';
 import {CardHeaderType} from '../components/qard/header';
 import {decodeWidgetDataObject} from '../cms/utils';
 import Immutable from 'immutable';
+import {format} from 'date-fns';
 
 let settingsConfig = require('../../static/config/settings.json');
 let postsConfig = require('../../static/config/posts.json');
 let pluginsConfig = require('../../static/config/plugins.json');
 let themeConfig = require('../../static/config/theme.json');
-
-if (process.env.SETTINGS_CONFIG_FILE) {
-	settingsConfig = require(process.env.SETTINGS_CONFIG_FILE);
-}
-if (process.env.POSTS_CONFIG_FILE) {
-	postsConfig = require(process.env.POSTS_CONFIG_FILE);
-}
-if (process.env.PLUGINS_CONFIG_FILE) {
-	pluginsConfig = require(process.env.PLUGINS_CONFIG_FILE);
-}
-if (process.env.THEME_CONFIG_FILE) {
-	themeConfig = require(process.env.THEME_CONFIG_FILE);
-}
 
 export const cPattern = /{"widget":"([a-zA-Z0-9-]+)","config":"(.*?)"}/;
 export const cPatternWithId = (id: string): string => {
@@ -73,25 +60,25 @@ export function tokenizePost(post: PostType): PostType {
 			},
 		}, {
 			//  Will replace the token with a `createdAt` derrived date (the date format is specified)
-			//  using a formatter that is applied with moment
+			//  using a formatter that is applied with date-fns
 			perform: (input: string): string => {
 				const r = /{createdAt:([a-zA-Z0-9-_:]+)}/i;
 				const match = r.exec(input);
 
 				if (!match) return input;
-				const format = match[1];
-				return input.replace(r, moment(post.frontmatter.created_at).format(format));
+				const dtFormat = match[1];
+				return input.replace(r, format(new Date(post.frontmatter.created_at), dtFormat));
 			},
 		}, {
 			//  Will replace the token with derrived date (from current date) (the date format is specified)
-			//  using a formatter that is applied with moment
+			//  using a formatter that is applied with date-fns
 			perform: (input: string): string => {
 				const r = /{currentDate:([a-zA-Z0-9-_:]+)}/i;
 				const match = r.exec(input);
 
 				if (!match) return input;
-				const format = match[1];
-				return input.replace(r, moment().format(format));
+				const dtFormat = match[1];
+				return input.replace(r, format(new Date(), dtFormat));
 			},
 		},
 	];

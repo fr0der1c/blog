@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import styled from "styled-components";
-import {Box, Flex} from "grid-styled";
+import {Box, Flex} from '@rebass/grid';
 import {Button} from "@blueprintjs/core";
 import {
     FacebookIcon,
@@ -60,12 +60,6 @@ export default class SocialShare extends Component<Props, State> {
                         <WhatsappShareButton url={url} title={message}>
                             <Btn icon={<WhatsappIcon size={48}/>}/>
                         </WhatsappShareButton>
-                    </Box>
-
-                    <Box px={2}>
-                        <GooglePlusShareButton url={url}>
-                            <Btn icon={<GooglePlusIcon size={48}/>}/>
-                        </GooglePlusShareButton>
                     </Box>
 
                     <Box px={2}>

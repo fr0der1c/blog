@@ -37,7 +37,50 @@ export const settingsCollection = {
 			faster both for your users and search engines. In performance mode
 			we won't load many posters (when showing posts results), we will
 			not be using too many css effects and we will not load an external
-			font`,
+			font. Some of these tweaks can also be altered separately.`,
+		}, {
+			label : 'Typography',
+			name  : 'typography',
+			widget: 'object',
+			hint  : `Customise your main font from here. There are certain performance
+			advantages in using the "typeface-?" packages (you can search for them on npmjs)
+			so I added support for specifying them here.
+			`,
+			fields: [{
+				label  : 'Family',
+				name   : 'bodyFontFamily',
+				widget : 'string',
+				default: 'Roboto',
+				hint   : 'The font family for your body content',
+			}, {
+				label  : 'Family',
+				name   : 'headerFontFamily',
+				widget : 'string',
+				default: 'Roboto',
+				hint   : 'The font family for headers and titles',
+			}, {
+				label  : 'Base line height',
+				name   : 'baseLineHeight',
+				widget : 'number',
+				default: 1,
+				hint   : `The base line height for your typography`,
+			}, {
+				label   : 'Typeface package',
+				name    : 'fontSize',
+				widget  : 'string',
+				required: false,
+				default : '15px',
+				hint    : `The font size (in pixels) to serve as a base for all fonts
+				calculations.`,
+			}, {
+				label   : 'Typeface package',
+				name    : 'npmPackage',
+				widget  : 'string',
+				required: false,
+				default : 'typeface-roboto',
+				hint    : `(optional) Specify the "typeface-?" package to be imported. If you
+				don't want to use a "typeface-?" package you can leave this field blank.`,
+			}],
 		}, {
 			label : 'Logo',
 			name  : 'logo',
@@ -288,6 +331,14 @@ export const settingsCollection = {
 			page: https://www.netlifycms.org/docs/configuration-options/#slug`,
 			default : '{{slug}}',
 			required: true,
+		}, {
+			label   : 'Path prefix',
+			name    : 'pathPrefix',
+			widget  : 'string',
+			hint    : `Specify the path where your index should be. This value can be something like
+			"/posts" or "/blog". Your prefix should start with a slash "/" but NOT end with one!`,
+			default : '/posts',
+			required: true,
 		}],
 	}, {
 		name  : 'plugins',
@@ -328,6 +379,19 @@ export const settingsCollection = {
 					name  : 'endpoint',
 					widget: 'string',
 				}],
+			}],
+		}, {
+			label : 'Disqus comments',
+			name  : 'disqus',
+			widget: 'object',
+			fields: [{
+				label : 'Enable?',
+				name  : 'enable',
+				widget: 'boolean',
+			}, {
+				label : 'Shortname',
+				name  : 'shortname',
+				widget: 'string',
 			}],
 		}, {
 			label : 'Search',

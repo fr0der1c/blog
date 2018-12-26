@@ -72,7 +72,6 @@ export const _ = graphql`
 			excerpt
 			created_at(formatString: "MMMM DD, YYYY")
 			tags
-			
 			showAuthor
 			isPage
 			isFeatured

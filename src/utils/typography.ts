@@ -1,22 +1,17 @@
-import Typography from "typography";
-import { getSettingsConfig } from "./helpers";
+import Typography from 'typography';
+import {getSettingsConfig} from './helpers';
 
-let bodyFontFamily = ["Roboto", "Helvetica", "Arial", "sans-serif"];
-let headerFontFamily = bodyFontFamily;
-
-const performance = getSettingsConfig("performanceMode");
-
-if (performance == true) {
-	bodyFontFamily.shift();
-	headerFontFamily.shift();
-}
+const fontSize = getSettingsConfig(['typography', 'fontSize']);
+const fontFamily = getSettingsConfig(['typography', 'bodyFontFamily']);
+const baseLineHeight = getSettingsConfig(['typography', 'baseLineHeight']);
+const headerFontFamily = getSettingsConfig(['typography', 'headerFontFamily']);
 
 const typography = new Typography({
-	baseFontSize    : performance ? "15px" : "16px",
-	baseLineHeight  : 1,
+	baseFontSize    : fontSize,
+	baseLineHeight  : parseInt(baseLineHeight),
 	omitGoogleFont  : true,
-	headerFontFamily: headerFontFamily,
-	bodyFontFamily  : bodyFontFamily
+	bodyFontFamily  : fontFamily.split(','),
+	headerFontFamily: headerFontFamily.split(','),
 });
 
 export default typography;

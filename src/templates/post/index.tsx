@@ -40,7 +40,7 @@ const PostTemplate = ({data, location}: Props) => {
 
 export default PostTemplate;
 
-export const pageQuery = graphql`
+export const query = graphql`
 	query($slug: String, $tags: [String]) {
 		post: markdownRemark(fields: { slug: { eq: $slug } }) {
 			...postFragment
@@ -48,6 +48,7 @@ export const pageQuery = graphql`
 
 		related: allMarkdownRemark(
 			sort: {fields: [frontmatter___created_at], order: DESC},
+			limit: 6,
 			filter: {
 				fileAbsolutePath: {regex: "//static/content/collections/posts//"},
 				frontmatter: {tags: {in: $tags}},

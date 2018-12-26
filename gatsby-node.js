@@ -1,11 +1,22 @@
 require('typescript-require');
 
 const _ = require('lodash');
+const fs = require('fs');
+const ncp = require('ncp').ncp;
 const Promise = require('bluebird');
 const path = require('path');
+const mkdirp = require('mkdirp');
+const rimraf = require('rimraf');
 const base64 = require('base-64');
 const {createFilePath} = require('gatsby-source-filesystem');
 
+const postsSettings = require('./static/config/posts.json');
+const siteSettings = require('./static/config/settings.json');
+
+const postTemplate = path.resolve('./src/templates/post/index.tsx');
+const postsTemplate = path.resolve('./src/templates/posts/index.tsx');
+const tagTemplate = path.resolve('./src/templates/tag/index.tsx');
+const categoryTemplate = path.resolve('./src/templates/category/index.tsx');
 
 const getTags = (edges) => {
 	const tags = [];
@@ -21,33 +32,148 @@ const getTags = (edges) => {
 	return tags;
 };
 
-const getCategories = (edges) => {
-	const categories = [];
+const paginatePosts = (createPage, postsEdges) => {
+	const pathPrefix = postsSettings.pathPrefix || 'posts';
 
-	_.each(edges, (edge) => {
-		categories.push(edge.node);
+	const filterOutPages = (edges) => {
+		const filteredPosts = [];
+		edges.map((post) => {
+			//	We need to filter out from pagination the default post also (supported cards)
+			if (post.node.frontmatter.isPage !== true && post.node.fileAbsolutePath.indexOf('static/content/collections/posts') !== -1) {
+				filteredPosts.push(post);
+			}
+		});
+		return filteredPosts;
+	};
+
+	//	Setup pagination but start with filtering out the
+	//	posts that are pages otherwise we will have more pagination
+	//	pages and the template will fail to recognize some
+	const posts = filterOutPages(postsEdges);
+	const postsPerPage = 6;
+
+	const numPages = Math.ceil(posts.length / postsPerPage);
+
+	_.times(numPages, i => {
+		createPage({
+			path     : i === 0 ? `${pathPrefix}` : `${pathPrefix}/${i + 1}`,
+			component: postsTemplate,
+			context  : {
+				limit      : postsPerPage,
+				skip       : i * postsPerPage,
+				numPages,
+				currentPage: i + 1,
+			},
+		});
 	});
 
-	return categories;
+	// Create posts and pages.
+	_.each(postsEdges, (edge, index) => {
+		const slug = edge.node.fields.slug;
+		const previous = index === postsEdges.length - 1 ? null : postsEdges[index + 1].node;
+		const next = index === 0 ? null : postsEdges[index - 1].node;
+
+		// create posts
+		createPage({
+			path     : slug,
+			component: postTemplate,
+			context  : {
+				slug,
+				previous,
+				next,
+				tags: edge.node.frontmatter.tags,
+			},
+		});
+	});
 };
 
-const slugify = (text) => {
-	return text.toString().toLowerCase()
-		.replace(/\s+/g, '-')           // Replace spaces with -
-		.replace(/[^\w\-]+/g, '')       // Remove all non-word chars
-		.replace(/\-\-+/g, '-')         // Replace multiple - with single -
-		.replace(/^-+/, '')             // Trim - from start of text
-		.replace(/-+$/, '');            // Trim - from end of text
+const paginateTags = (createPage, posts) => {
+	//	Setup pagination
+	const tags = _.uniq(getTags(posts));
+
+	if (tags.length <= 0) return;
+
+	const getPostsByTag = (tag) => {
+		const postsByTag = [];
+		posts.map((post) => {
+			const p = post.node;
+
+			if (p.frontmatter.tags && p.frontmatter.tags.length > 0 && p.frontmatter.tags.includes(tag)) {
+				postsByTag.push(p.node);
+			}
+		});
+		return postsByTag;
+	};
+
+	const paginateTag = (tag) => {
+		const postsPerPage = 6;
+		const tagPosts = getPostsByTag(tag);
+		const numPages = Math.ceil(tagPosts.length / postsPerPage);
+		const slug = slugify(tag);
+
+		_.times(numPages, i => {
+			createPage({
+				path     : i === 0 ? `tag/${slug}` : `tag/${slug}/${i + 1}`,
+				component: tagTemplate,
+				context  : {
+					limit      : postsPerPage,
+					skip       : i * postsPerPage,
+					numPages,
+					currentPage: i + 1,
+					tag,
+					slug,
+				},
+			});
+		});
+	};
+
+	//	Make tag pages
+	tags.forEach(paginateTag);
+};
+
+const paginateCategories = (createPage, posts, categories) => {
+	if (categories.length <= 0) return;
+
+	const getPostsByCategory = (category) => {
+		const postsByCategory = [];
+		posts.map((post) => {
+			const p = post.node;
+
+			if (p.frontmatter.categories === category.frontmatter.title) {
+				postsByCategory.push(p.node);
+			}
+		});
+		return postsByCategory;
+	};
+
+	_.uniqBy(categories, 'node.id').forEach((category) => {
+		const c = category.node;
+		const postsPerPage = 6;
+		const categoryPosts = getPostsByCategory(c);
+		const numPages = Math.ceil(categoryPosts.length / postsPerPage);
+		const slug = c.fields.slug;
+
+		_.times(numPages, i => {
+			createPage({
+				path     : i === 0 ? slug : `${slug}${i + 1}`,
+				component: categoryTemplate,
+				context  : {
+					limit      : postsPerPage,
+					skip       : i * postsPerPage,
+					numPages,
+					currentPage: i + 1,
+					category   : c,
+					slug,
+				},
+			});
+		});
+	});
 };
 
 exports.createPages = ({graphql, actions}) => {
 	const {createPage} = actions;
 
 	return new Promise((resolve, reject) => {
-		const postTemplate = path.resolve('./src/templates/post/index.tsx');
-		const tagTemplate = path.resolve('./src/templates/tag/index.tsx');
-		const categoryTemplate = path.resolve('./src/templates/category/index.tsx');
-
 		resolve(
 			graphql(`
 				{
@@ -59,7 +185,11 @@ exports.createPages = ({graphql, actions}) => {
 								}
 								frontmatter {
 									tags
+									isPage
+									created_at
+									categories
 								}
+								fileAbsolutePath
 							}
 						}
 					}
@@ -70,6 +200,9 @@ exports.createPages = ({graphql, actions}) => {
 								id
 								fields{
 									slug
+								}
+								frontmatter {
+									title
 								}
 							}
 						}
@@ -84,50 +217,9 @@ exports.createPages = ({graphql, actions}) => {
 				const postsEdges = result.data.posts.edges;
 				const categoriesEdges = result.data.categories.edges;
 
-				const tags = getTags(postsEdges);
-				const categories = getCategories(categoriesEdges);
-
-				// Create posts and pages.
-				_.each(postsEdges, (edge, index) => {
-					const slug = edge.node.fields.slug;
-
-					const previous = index === postsEdges.length - 1 ? null : postsEdges[index + 1].node;
-					const next = index === 0 ? null : postsEdges[index - 1].node;
-
-					// create posts
-					createPage({
-						path     : slug,
-						component: postTemplate,
-						context  : {
-							slug,
-							previous,
-							next,
-							tags: edge.node.frontmatter.tags,
-						},
-					});
-				});
-
-				// Make tag pages
-				_.uniq(tags).forEach((tag) => {
-					createPage({
-						path     : `/tags/${slugify(tag)}/`,
-						component: tagTemplate,
-						context  : {
-							slug: slugify(tag), tag,
-						},
-					});
-				});
-
-				// Make category pages
-				_.uniqBy(categories, 'id').forEach((category) => {
-					createPage({
-						path     : category.fields.slug,
-						component: categoryTemplate,
-						context  : {
-							slug: category.fields.slug,
-						},
-					});
-				});
+				paginatePosts(createPage, postsEdges);
+				paginateTags(createPage, postsEdges);
+				paginateCategories(createPage, postsEdges, categoriesEdges);
 			}),
 		);
 	});
@@ -171,20 +263,73 @@ const mapAuthorsToPostNode = (node, getNodes) => {
 	if (author) node.authors___NODES = [author.id];
 };
 
+const slugify = (text) => {
+	return text.toString().toLowerCase()
+		.replace(/\s+/g, '-')           // Replace spaces with -
+		.replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+		.replace(/\-\-+/g, '-')         // Replace multiple - with single -
+		.replace(/^-+/, '')             // Trim - from start of text
+		.replace(/-+$/, '');            // Trim - from end of text
+};
+
+/**
+ *    Netlify cms supports custom slugs but not fully
+ *    For example you can't add a slug config like: {{year}}/{{month}}/{{day}}
+ *    and expect for it to work because the slashes will get replaced with
+ *    dashes since Netlify CMS does NOT know how to deal with subfolders
+ *    For a new blog this is not a big deal but it might be for a blog that
+ *    is being imported from Wordpress which has this type of urls (I know
+ *    because I faced this issue). The solution is to create the slug here
+ */
+const createFinalSlug = (post, slug) => {
+	//	based on the posts settings
+	const slugConfig = postsSettings.slugStructure;
+
+	//	SUPPORTED TOKENS
+	//
+	// {{slug}}:   a url-safe version of the title field for the file
+	// {{year}}:   4-digit year of the file creation date
+	// {{month}}:  2-digit month of the file creation date
+	// {{day}}:    2-digit day of the month of the file creation date
+	// {{hour}}:   2-digit hour of the file creation date
+	// {{minute}}: 2-digit minute of the file creation date
+	// {{second}}: 2-digit second of the file creation date
+	const dt = new Date(post.frontmatter.created_at);
+	const mo = ('0' + (dt.getMonth() + 1)).slice(-2);
+	const day = ('0' + dt.getDate()).slice(-2);
+	const year = dt.getFullYear();
+	const hour = dt.getHours();
+	const minute = dt.getMinutes();
+	const second = dt.getSeconds();
+
+	return `/${slugConfig}/`
+		.replace('{{slug}}', slug)
+		.replace('{{year}}', year)
+		.replace('{{month}}', mo)
+		.replace('{{day}}', day)
+		.replace('{{hour}}', hour)
+		.replace('{{minute}}', minute)
+		.replace('{{second}}', second)
+		//	replace double slashes with a single one
+		.replace(/\/+/g, '/');
+};
+
 //	Creates a mapping between posts and authors, sets the slug
 //	and other required attributes
 exports.sourceNodes = ({actions, getNodes, getNode}) => {
 	const {createNodeField} = actions;
 
 	getCollectionNodes('categories', getNodes).forEach(node => {
-		createNodeField({node, name: 'slug', value: `categories${createFilePath({node, getNode})}`});
+		createNodeField({node, name: 'slug', value: `category${createFilePath({node, getNode})}`});
 	});
 
 	getCollectionNodes('posts', getNodes).forEach(node => {
 		mapAuthorsToPostNode(node, getNodes);
 		mapCategoriesToPostNode(node, getNodes);
+
 		//	create the post slug
-		createNodeField({node, name: 'slug', value: createFilePath({node, getNode})});
+		const slugPath = createFilePath({node, getNode});
+		createNodeField({node, name: 'slug', value: createFinalSlug(node, slugPath)});
 	});
 };
 
@@ -222,6 +367,84 @@ const createReferencesField = (node, actions, getNodes) => {
 	});
 
 	node.references___NODES = references;
+};
+
+exports.onCreateWebpackConfig = ({stage, actions}) => {
+	const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
+
+	if (stage === 'build-javascript') {
+		// Turn off source maps
+		actions.setWebpackConfig({
+			devtool: false,
+		});
+	}
+
+	actions.setWebpackConfig({
+		plugins: [
+			new MomentLocalesPlugin(),
+		],
+	});
+};
+
+exports.onPreBootstrap = () => {
+	//	See gatsby-browser.js to learn why we do this
+	const customfontsDir = './public/custom-fonts';
+	const performanceMode = siteSettings.performanceMode;
+
+	const writeEmptyFile = () => {
+		return new Promise((resolve, reject) => {
+			mkdirp(customfontsDir, (err) => {
+				if (err) {
+					reject(err);
+				} else {
+					//	write an empty file because we can't conditionally import inside gatsby-browser
+					fs.writeFile('./public/custom-fonts/index.css', '', (err) => {
+						if (err) {
+							reject(err);
+						}
+						resolve();
+					});
+				}
+			});
+		});
+	};
+
+	const loadCustomFonts = () => {
+		const fontNpmPackage = siteSettings.typography.npmPackage;
+
+		writeEmptyFile().then(() => {
+			if (fontNpmPackage) {
+				ncp.limit = 16;
+
+				mkdirp(customfontsDir, (err) => {
+					if (err) {
+						console.error('unable to create custom fonts folder');
+						throw err;
+					} else {
+						if (!performanceMode) {
+							ncp(`node_modules/${fontNpmPackage}`, customfontsDir, (err) => {
+								if (err) {
+									console.error('unable to copy font package');
+									throw err;
+								}
+							});
+						} else {
+							console.warn('Performance mode: external font will not be loaded!');
+						}
+					}
+				});
+			}
+		}).catch((err) => {
+			throw err;
+		});
+	};
+
+	//	Ensure a clean copy of the custom fonts dir
+	if (fs.existsSync(customfontsDir)) {
+		rimraf(customfontsDir, {}, loadCustomFonts);
+	} else {
+		loadCustomFonts();
+	}
 };
 
 //	Creates a `references` field that holds the references to other posts
