@@ -21,7 +21,7 @@ excerpt: >-
   项目一启动就要占用 250MB 左右内存，感觉有点偏高，于是尝试优化。这篇文章牵涉到 Linux 的 CoW 在 Python
   中的处理方式，目前中文互联网上没有什么资料，于是我顺便填补一下这个空白。
 ---
-{"widget":"qards-section-heading","config":"eyJ0eXBlIjoicHJpbWFyeSIsInRpdGxlIjoiVGhlIGxhenktYXBwcyBvcHRpb24iLCJzdWJ0aXRsZSI6IlNoYXJlIG1lbW9yeSBhcyBtdWNoIGFzIHBvc3NpYmxlIn0="}
+{"widget":"qards-section-heading","config":"eyJ0eXBlIjoicHJpbWFyeSIsInRpdGxlIjoibGF6eS1hcHBzIOmAiemhuSIsInN1YnRpdGxlIjoi5bCd6K+V5bC95Y+v6IO95YWx5Lqr5pu05aSa55qE5YaF5a2YIn0="}
 
 uWSGI 有一个选项叫做 lazy-apps，它控制的是加载 WSGI app 和 fork() 系统调用的先后顺序。当 lazy-apps 为 true 时，先 fork() 再在每个子进程里加载 app；反之，先在 master 进程里加载 app 再 fork()。显然，加载一次 app 再 fork() 可以让子进程之间共享更多的内存。
 
@@ -33,7 +33,7 @@ uWSGI 有一个选项叫做 lazy-apps，它控制的是加载 WSGI app 和 fork(
 
 延伸阅读：关于 lazy-apps ，这篇文章值得参考：https://engineering.ticketea.com/uwsgi-preforking-lazy-apps/ （上面两幅图片的来源）。
 
-{"widget":"qards-section-heading","config":"eyJ0eXBlIjoicHJpbWFyeSIsInRpdGxlIjoiQWRhcHRpdmVseSBzcGF3bmluZyB3b3JrZXJzIiwic3VidGl0bGUiOiJ1V1NHSSBjaGVhcCBtb2RlIGlzIHlvdXIgZnJpZW5kIn0="}
+{"widget":"qards-section-heading","config":"eyJ0eXBlIjoicHJpbWFyeSIsInRpdGxlIjoi5Yqo5oCB5Lqn55SfIHdvcmtlcnMiLCJzdWJ0aXRsZSI6InVXU0dJIGNoZWFwIG1vZGUg5piv5L2g55qE5aW95Yqp5omLIn0="}
 
 如果你的流量波动比较大，你可能会希望在平时使用较少的 worker 数，而在流量增加时自动增加 worker 数。uWSGI 的 cheap 功能可以做到这点。以下是一个使用示例：
 
@@ -41,7 +41,7 @@ uWSGI 有一个选项叫做 lazy-apps，它控制的是加载 WSGI app 和 fork(
 
 其中，processes 代表最大的 worker 数，cheaper 代表最小的 worker 数，cheaper-algo 是判断是否需要增加 worker 数的算法，具体可以参看官方文档： https://uwsgi-docs.readthedocs.io/en/latest/Cheaper.html 。
 
-{"widget":"qards-section-heading","config":"eyJ0eXBlIjoicHJpbWFyeSIsInRpdGxlIjoiUHl0aG9uIHdpdGggQ29weS1vbi1Xcml0ZSJ9"}
+{"widget":"qards-section-heading","config":"eyJ0eXBlIjoicHJpbWFyeSIsInRpdGxlIjoiUHl0aG9uIOS4reeahCBDb3B5LW9uLVdyaXRlIn0="}
 
 Instagram 作为可能是世界上最大规模的（基于 django 的） Python Web 项目，在内存优化方面有不少尝试。我参看了他们的几篇文章：
 
@@ -62,13 +62,17 @@ Linux 的 Copy-on-Write （写时复制）是一个给 fork 出的进程提供�
 
 考虑到 GC 时被 CoW 的问题仅存在于 master 中创建然后被 workers 共享的对象中，Instagram 团队尝试让这些共享的对象对 GC 机制不可见。 他们在 Python 的 GC 模块中加入了 gc.freeze() 方法，将对象从 Python 内部维护的用于垃圾回收的链表中去除，并将这一更新推送到了 Python 社区（https://github.com/python/cpython/pull/3705 ）。这一 API 将在 Python 3.7 之后可用。 
 
-{"widget":"qards-section-heading","config":"eyJ0eXBlIjoicHJpbWFyeSIsInRpdGxlIjoiVHVuaW5nIEdhcmJhZ2UgQ29sbGVjdGlvbiJ9"}
+{"widget":"qards-section-heading","config":"eyJ0eXBlIjoicHJpbWFyeSIsInRpdGxlIjoi6LCD5pW05Z6D5Zy+5Zue5pS2In0="}
 
 那么，我们开始进行实际操作吧。
 
 首先升级到 Python 3.7，然后查看 gc.freeze() 的用法：
 
+
+
 Freeze all the objects tracked by gc - move them to a permanent generation and ignore all the future collections. This can be used before a POSIX fork() call to make the gc copy-on-write friendly or to speed up collection. Also collection before a POSIX fork() call may free pages for future allocation which can cause copy-on-write too so **it’s advised to disable gc in master process and freeze before fork and enable gc in child process**.
+
+
 
 于是在我们程序的入口：
 
@@ -78,6 +82,6 @@ Freeze all the objects tracked by gc - move them to a permanent generation and i
 
 {"widget":"qards-code","config":"eyJjb2RlIjoiaW1wb3J0IHV3c2dpZGVjb3JhdG9yc1xuXG5AdXdzZ2lkZWNvcmF0b3JzLnBvc3Rmb3JrXG5kZWYgZW5hYmxlX2djKCk6XG4gICAgXCJcIlwiZW5hYmxlIGdhcmJhZ2UgY29sbGVjdGlvblwiXCJcIlxuICAgIGdjLnNldF90aHJlc2hvbGQoNzAwKSIsImxhbmd1YWdlIjoicHl0aG9uIn0="}
 
-{"widget":"qards-section-heading","config":"eyJ0eXBlIjoicHJpbWFyeSIsInRpdGxlIjoiQ29uY2x1c2lvbiJ9"}
+{"widget":"qards-section-heading","config":"eyJ0eXBlIjoicHJpbWFyeSIsInRpdGxlIjoi57uT6K66In0="}
 
 在这篇文章中我们谈到了 CoW 机制在 Python 中的特殊性，并通过 Python 3.7 的新 API 对程序进行优化。效果有待进一步检验。
