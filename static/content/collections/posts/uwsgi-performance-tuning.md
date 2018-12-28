@@ -45,7 +45,7 @@ $ ab -c 500 -n 5000 -s 90 http://127.0.0.1:80/_healthCheck
 
 {"widget":"qards-code","config":"eyJjb2RlIjoiUmVxdWVzdHMgcGVyIHNlY29uZDogICAgMTEwMS40NSBbIy9zZWNdIChtZWFuKVxuVGltZSBwZXIgcmVxdWVzdDogICAgICAgOTA3Ljg5NCBbbXNdIChtZWFuKVxuVGltZSBwZXIgcmVxdWVzdDogICAgICAgMC45MDggW21zXSAobWVhbiwgYWNyb3NzIGFsbCBjb25jdXJyZW50IHJlcXVlc3RzKSJ9"}
 
-{"widget":"qards-section-heading","config":"eyJ0eXBlIjoic2Vjb25kYXJ5IiwidGl0bGUiOiJEbyBub3QgdXNlIEFwYWNoZSBCZW5jaG1hcmsgb24gTWFjISJ9"}
+{"widget":"qards-section-heading","config":"eyJ0eXBlIjoic2Vjb25kYXJ5IiwidGl0bGUiOiLkuI3opoHlnKggTWFjIOS4iuS9v+eUqCBBcGFjaGUgQmVuY2htYXJr77yBIn0="}
 
 当我尝试增大并发量的时候，出现了问题：
 
@@ -55,7 +55,7 @@ $ ab -c 500 -n 5000 -s 90 http://127.0.0.1:80/_healthCheck
 
 使用 `docker run -it --rm --net host httpd bash` 来启动一个包含 ab 的容器，之后使用 ab 都使用这个容器里的 ab。
 
-{"widget":"qards-section-heading","config":"eyJ0eXBlIjoic2Vjb25kYXJ5IiwidGl0bGUiOiJBZGp1c3QgYG5ldC5jb3JlLnNvbWF4Y29ubmAgcGFyYW1ldGVyIn0="}
+{"widget":"qards-section-heading","config":"eyJ0eXBlIjoic2Vjb25kYXJ5IiwidGl0bGUiOiLosIPmlbQgYG5ldC5jb3JlLnNvbWF4Y29ubmAg5Y+C5pWwIn0="}
 
 当你所有的 worker 都在处理任务时，它们无法 accept 新的请求。因此在请求源源不断地到来时，你的内核缓冲区将不断积累未被 accept 的连接，直到超过内核的 `net.core.somaxconn` 上限。Linux 中这个参数的默认值为 128。这个值对于 Web 服务器来说太小了，因此我们需要修改这个参数。
 
@@ -67,7 +67,7 @@ $ ab -c 500 -n 5000 -s 90 http://127.0.0.1:80/_healthCheck
 
 除了内核的限制之外，还有 uWSGI 本身的限制。因此，在 uWSGI 配置文件中加入：`listen = 4096`（即监听队列长度为 4096），现在启动 uWSGI 时你可以看到 `your server socket listen backlog is limited to 4096 connections` 的字样，表明设置成功了。（如果这个值设置的比系统最大值大，会导致 uWSGI 无法启动）
 
-{"widget":"qards-section-heading","config":"eyJ0eXBlIjoicHJpbWFyeSIsInRpdGxlIjoiRGlzYWJsZSBMb2dnaW5nIn0="}
+{"widget":"qards-section-heading","config":"eyJ0eXBlIjoicHJpbWFyeSIsInRpdGxlIjoi5YWz6Zet5pel5b+XIn0="}
 
 我们来尝试一些邪门的小技巧吧，比如关闭 uWSGI 的访问日志。关闭它对我们不会产生多大的影响，因为生产环境中在反向代理处会有日志，而在开发环境中，无用的访问日志会淹没重要的报错信息。在 uWSGI 的配置文件中加入 `disable-logging = True` ，然后我们再来测试一下性能：
 
@@ -75,7 +75,7 @@ $ ab -c 500 -n 5000 -s 90 http://127.0.0.1:80/_healthCheck
 
 老实说，在测试之前我并不太相信关闭日志会对性能造成多大的提升。但结果表明，关闭日志使程序每秒钟多处理了 441 个请求。
 
-{"widget":"qards-section-heading","config":"eyJ0eXBlIjoicHJpbWFyeSIsInRpdGxlIjoiQWRkIG1vcmUgd29ya2VycyJ9"}
+{"widget":"qards-section-heading","config":"eyJ0eXBlIjoicHJpbWFyeSIsInRpdGxlIjoi5aKe5Yqg5pu05aSa55qEIHdvcmtlciJ9"}
 
 在性能不够时，增加 worker 是一个很常见的思路。我们当前的配置只有 4 个进程（每个进程中一个线程），这意味着如果 4 个 worker 都在忙碌，程序就会暂时卡住。当然，比这更糟糕的是，如果代码出现了死循环，并且这段死循环代码在全部 worker 中执行，并且你没有设置 `harakiri` 参数，你的程序会永久卡住，除非你强行重启 uWSGI。
 
@@ -85,7 +85,7 @@ $ ab -c 500 -n 5000 -s 90 http://127.0.0.1:80/_healthCheck
 
 测试的结果令我们有点惊讶，增大 worker 数量到 10 之后，吞吐量不仅没有上升，反而稍微下降了。欢迎来到惊群问题（thundering the herd）。
 
-{"widget":"qards-section-heading","config":"eyJ0eXBlIjoic2Vjb25kYXJ5IiwidGl0bGUiOiJUaHVuZGVyaW5nIHRoZSBoZXJkIn0="}
+{"widget":"qards-section-heading","config":"eyJ0eXBlIjoic2Vjb25kYXJ5IiwidGl0bGUiOiLmg4rnvqTpl67popgifQ=="}
 
 惊群简单来说就是多个进程或者线程在等待同一个事件，当事件发生时，所有线程和进程都会被内核唤醒。唤醒后通常只有一个进程获得了该事件并进行处理，其他进程发现获取事件失败后又继续进入了等待状态。监听同一个事件的进程数越多，争用 CPU 的情况越严重（尽管实际上只有一个进程能成功获得事件并进行处理），造成了严重的上下文切换成本。
 
@@ -109,7 +109,7 @@ uWSGI 并不是只需要监听 accept() 请求，因此内核对 accept() 的防
 
 可以看到，开启了 thunder lock 之后，性能有所恢复。是不是有了锁之后，我们就可以随便开大进程数了呢？答案是否定的。我们在下一篇谈这个问题。
 
-{"widget":"qards-section-heading","config":"eyJ0eXBlIjoicHJpbWFyeSIsInRpdGxlIjoiTXVsdGl0aHJlYWRpbmcifQ=="}
+{"widget":"qards-section-heading","config":"eyJ0eXBlIjoicHJpbWFyeSIsInRpdGxlIjoi5aSa57q/56iLIn0="}
 
 刚刚我们谈到了 Python 的 GIL，那为什么我还要在这里说多线程呢？因为你的代码实际上并不一定是 CPU-bound 的，而进程上下文切换的成本比线程高多了，所以并不一定进程开的越多越好，具体的参数还是要慢慢尝试调整。在设置了 threads = 2 后，测试出来的吞吐量反而下降了一点：
 
@@ -121,6 +121,6 @@ uWSGI 并不是只需要监听 accept() 请求，因此内核对 accept() 的防
 2132.08 1325.72 1795.32 1381.67 1283.08 1399.98 1488.05
 ```
 
-{"widget":"qards-section-heading","config":"eyJ0eXBlIjoicHJpbWFyeSIsInRpdGxlIjoiQ29uY2x1c2lvbiJ9"}
+{"widget":"qards-section-heading","config":"eyJ0eXBlIjoicHJpbWFyeSIsInRpdGxlIjoi57uT6K66In0="}
 
 就如本文开头说明的一样，本次优化侧重于 uWSGI 的调优而非代码本身。其实代码里会有很多可以改进的地方，我们下一篇再谈。今天最大的发现就是：worker 数量不是拍脑门定的，要针对实际性能（容器的资源限制）来测试，找到最佳 worker 数。
