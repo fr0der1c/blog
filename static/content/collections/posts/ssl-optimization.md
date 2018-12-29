@@ -32,7 +32,9 @@ forward secrecy 也称之为 perfect forward secrecy，或者 PFS。称之为完
 
 目前只有用 ephemeral Diffie-Hellman 的算法才算是完美远期加密。
 
-### 配置方法
+
+{"widget":"qards-section-heading","config":"eyJ0aXRsZSI6IumFjee9ruaWueazlSIsInR5cGUiOiJzZWNvbmRhcnkifQ=="}
+
 
 在终端运行（建议把这个 Diffie-Hellman 参数文件和证书放在一起）：
 
@@ -73,7 +75,9 @@ HSTS 简单说就是在一定时间内强制客户端使用 HTTPS 访问页面�
 
 如何解决呢？请看后文的 **HPKP**。
 
-### 开启 HSTS
+
+{"widget":"qards-section-heading","config":"eyJ0aXRsZSI6IuW8gOWQryBIU1RTIiwidHlwZSI6InNlY29uZGFyeSJ9"}
+
 
 ```nginx
 add_header Strict-Transport-Security "max-age=6307200; includeSubdomains; preload";
@@ -113,7 +117,9 @@ DNS CAA 保护可以使域持有人可以**指定允许为其域签发证书的 
 
 并不是所有 DNS 服务器都支持 CAA 保护，支持 CAA 记录的国外 DNS 服务这里有比较详细的记录：https://sslmate.com/caa/support 。国内的话，我使用的 CloudXNS 是支持的。
 
-### 开启方法
+
+{"widget":"qards-section-heading","config":"eyJ0aXRsZSI6IuW8gOWQr+aWueazlSIsInR5cGUiOiJzZWNvbmRhcnkifQ=="}
+
 
 在你的 DNS 服务的后台添加一条 CAA 记录：
 
