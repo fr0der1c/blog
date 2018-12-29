@@ -20,7 +20,9 @@ excerpt: >-
 ---
 以下设置均为 Nginx 的配置。
 
-## Forward Secrecy（前向加密）
+
+{"widget":"qards-section-heading","config":"eyJ0aXRsZSI6IkZvcndhcmQgU2VjcmVjee+8iOWJjeWQkeWKoOWvhu+8iSIsInR5cGUiOiJwcmltYXJ5In0="}
+
 
 forward secrecy 也称之为 perfect forward secrecy，或者 PFS。称之为完美远期加密。是在HTTPS基础上进一步保护用户电脑同服务器之间的加密通讯。
 
@@ -48,9 +50,9 @@ ssl_dhparam dh4096.pem;
 
 之后restart **（NOT reload）** Nginx。
 
-- - -
 
-## HSTS（HTTP Strict Transport Security，严格传输安全）
+{"widget":"qards-section-heading","config":"eyJ0aXRsZSI6IkhTVFPvvIhIVFRQIFN0cmljdCBUcmFuc3BvcnQgU2VjdXJpdHnvvIzkuKXmoLzkvKDovpPlronlhajvvIkiLCJ0eXBlIjoicHJpbWFyeSJ9"}
+
 
 HSTS 简单说就是在一定时间内强制客户端使用 HTTPS 访问页面。原理如下：
 
@@ -83,9 +85,9 @@ add_header Strict-Transport-Security "max-age=6307200; includeSubdomains; preloa
 
 **提醒一下，只有443端口的监听需要设定 HSTS，80端口不需要增加 header。**
 
-- - -
 
-## HPKP（Public Key Pinning，公钥固定）
+{"widget":"qards-section-heading","config":"eyJ0aXRsZSI6IkhQS1DvvIhQdWJsaWMgS2V5IFBpbm5pbmfvvIzlhazpkqXlm7rlrprvvIkiLCJ0eXBlIjoicHJpbWFyeSJ9"}
+
 
 公钥固定（Public Key Pinning）是指一个**证书链中必须包含一个白名单中的公钥，也就是说只有被列入白名单的证书签发机构（CA）才能为某个域名*.example.com签发证书**，而不是你的浏览器中所存储的任何 CA 都可以为之签发。
 
@@ -101,9 +103,9 @@ add_header Strict-Transport-Security "max-age=6307200; includeSubdomains; preloa
 
 基于以上种种原因，这项谷歌发起的计划在 2017 年 10 月又被谷歌自己抛弃，并计划于 2018 年 5 月在 Chrome 浏览器中移除对 HPKP 的支持。详细情况可以[参见报导](https://www.landiannews.com/archives/41904.html)。因此，**现在没有必要给网站添加对于 HPKP 的支持了**。
 
-- - -
 
-## DNS CAA 保护
+{"widget":"qards-section-heading","config":"eyJ0aXRsZSI6IkROUyBDQUEg5L+d5oqkIiwidHlwZSI6InByaW1hcnkifQ=="}
+
 
 HPKP 废弃之后，是不是就没有办法了呢？好在有 DNS CAA （DNS Certification Authority Authorization，DNS证书颁发机构授权）保护。
 
@@ -119,9 +121,9 @@ DNS CAA 保护可以使域持有人可以**指定允许为其域签发证书的 
 * CAA data 填写 `0 issue "证书颁发机构域名"`，如果你用 Let's Encrypt 颁发的免费证书，CAA data 部分直接填写 `0 issue "letsencrypt.org"` 即可。
 * 你还可以添加一条为 `0 iodef "mailto:你的邮箱"` 的 CAA 记录，表示如果发现违背 CAA 记录的情况给这个邮箱发邮件通知
 
-- - -
 
-## SSL/TLS 协议版本
+{"widget":"qards-section-heading","config":"eyJ0aXRsZSI6IlNTTC9UTFMg5Y2P6K6u54mI5pysIiwidHlwZSI6InByaW1hcnkifQ=="}
+
 
 SSL v2 及以下已经不安全了，请使用 TLS v1 以上版本（TLS 协议是在 SSL v3 协议基础上设计的）。之所以把 SSL v3 也关了是因为 TLS 1.0 会被降级攻击，降级到 SSL v3 之后，我们之前提到的 Forward Secrecy（前向加密）就失效了。另外， SSL v3 存在 POODLE 漏洞，这是关闭它的另一个主要理由。
 
@@ -131,9 +133,9 @@ ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
 
 以上语句只允许使用 TLS 协议。
 
-- - -
 
-## 弃用不安全的加密套件
+{"widget":"qards-section-heading","config":"eyJ0aXRsZSI6IuW8g+eUqOS4jeWuieWFqOeahOWKoOWvhuWll+S7tiIsInR5cGUiOiJwcmltYXJ5In0="}
+
 
 ```nginx
 ssl_ciphers EECDH+CHACHA20:EECDH+CHACHA20-draft:EECDH+AES128:RSA+AES128:EECDH+AES256:RSA+AES256:EECDH+3DES:RSA+3DES:!MD5;
@@ -163,11 +165,13 @@ cipher 之间用冒号分隔，cipher 前有感叹号的表示必须废弃。以
 
 请注意，加密套件的选择和你证书是有关的。比如如果你使用了ECC+RSA双证书，你应该使用如下配置（否则其中一个证书可能不工作）：
 
+
 {"widget":"qards-code","config":"eyJjb2RlIjoic3NsX2NpcGhlcnMgRUVDREgrQ0hBQ0hBMjA6RUVDREgrRUNEU0ErQUVTR0NNOkVFQ0RIK0VDRFNBK1NIQTM4NDpFRUNESCtFQ0RTQStTSEEyNTY6RUVDREgrQUVTMTI4OlJTQStBRVMxMjg6RUVDREgrQUVTMjU2OlJTQStBRVMyNTY6RUVDREgrM0RFUzpSU0ErM0RFUzohTUQ1OyAifQ=="}
 
-- - -
 
-## OSCP Stapling
+
+{"widget":"qards-section-heading","config":"eyJ0aXRsZSI6Ik9TQ1AgU3RhcGxpbmciLCJ0eXBlIjoicHJpbWFyeSJ9"}
+
 
 当我们通过HTTPS访问网站的时候，客户端会通过证书颁发机构的证书吊销列表（CRL）或者数字证书在线状态协议(OCSP)记录验证网站服务器的证书是否有效。前一种验证方式是最低效的，CA会不断向CRL文件添加证书吊销记录，CRL文件就会变得越来越大，客户端在验证前就需要耗费越来越长的时间来下载CRL文件。
 
@@ -196,9 +200,9 @@ resolver_timeout 5s;
 
 注意上述 DNS 是阿里云的，如果不信任的话可以改成 Google 的：`8.8.8.8 8.8.4.4 [2001:4860:4860::8888] [2001:4860:4860::8844]`
 
-- - -
 
-## 缓存连接凭据
+{"widget":"qards-section-heading","config":"eyJ0aXRsZSI6Iue8k+WtmOi/nuaOpeWHreaNriIsInR5cGUiOiJwcmltYXJ5In0="}
+
 
 缓存 SSL 连接凭据可以避免频繁握手带来的速度降低和性能损耗。
 
@@ -218,17 +222,17 @@ ssl_session_timeout 60m;
 # 过期时间，分钟
 ```
 
-- - -
 
-## 防止 MIME 类型混淆攻击
+{"widget":"qards-section-heading","config":"eyJ0aXRsZSI6IumYsuatoiBNSU1FIOexu+Wei+a3t+a3huaUu+WHuyIsInR5cGUiOiJwcmltYXJ5In0="}
+
 
 ```nginx
 add_header X-Content-Type-Options nosniff;
 ```
 
-- - -
 
-## 301 跳转
+{"widget":"qards-section-heading","config":"eyJ0aXRsZSI6IjMwMSDot7PovawiLCJ0eXBlIjoicHJpbWFyeSJ9"}
+
 
 跳转到HTTPS，不多说了。
 
@@ -239,9 +243,9 @@ server {
 } 
 ```
 
-- - -
 
-## HTTP/2
+{"widget":"qards-section-heading","config":"eyJ0aXRsZSI6IkhUVFAvMiIsInR5cGUiOiJwcmltYXJ5In0="}
+
 
 尽管 HTTP/2 协议本身并不要求一定开启 SSL，但浏览器要求一定要启用 SSL 才能使用 HTTP/2。要使用 HTTP/2，把 listen directive 改成 `listen 443 ssl http2` 即可。HTTP/2 是 SPDY 的演进版本，性能上相比 HTTP 1.1 最主要的是增加了多路复用 multiplexing、header 压缩和二进制格式。
 
@@ -254,17 +258,17 @@ server {
 
 可以在谷歌浏览器中打开 chrome://net-internals/#http2 以检查网站是否开启了 HTTP/2。
 
-- - -
 
-## SSL 测试
+{"widget":"qards-section-heading","config":"eyJ0aXRsZSI6IlNTTCDmtYvor5UiLCJ0eXBlIjoicHJpbWFyeSJ9"}
+
 
 最后附上一个常用的测试网站SSL配置问题的网站：[SSL Server Test](https://www.ssllabs.com/ssltest/index.html)，你可以按照测试结果有针对性的进行优化。不过，不必追求满分。建议测试等级达到 A+、Certificate 100/100、Protocol Support 95/100、Key Exchange 90/100、Cipher Strength 90/100 即可。
 
 不过，它的缓存测试并不假设客户端支持 SNI，所以即便你对某一个 virtual server 开启了 ssl session cache，依然会提示 `Session resumption (caching)No (IDs assigned but not accepted)`。[解决方法请看这里](https://stackoverflow.com/questions/22732045/session-cache-not-detected-in-nginx)。
 
-- - -
 
-## 参考资料
+{"widget":"qards-section-heading","config":"eyJ0aXRsZSI6IuWPguiAg+i1hOaWmSIsInR5cGUiOiJwcmltYXJ5In0="}
+
 
 1. [更进一步的提高 SSL 的安全性，支持 Forward Secrecy](https://seo.g2soft.net/2015/02/27/enable-forward-secrecy.html)
 2. [如何在NGINX网站服务器中实施SSL完美前向保密技术?](http://netsecurity.51cto.com/art/201408/447473.htm)
