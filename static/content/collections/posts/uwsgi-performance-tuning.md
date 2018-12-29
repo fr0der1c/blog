@@ -166,4 +166,10 @@ uWSGI 并不是只需要监听 accept() 请求，因此内核对 accept() 的防
 就如本文开头说明的一样，本次优化侧重于 uWSGI 的调优而非代码本身。其实代码里会有很多可以改进的地方，我们下一篇再谈。今天最大的发现就是：worker 数量不是拍脑门定的，要针对实际性能（容器的资源限制）来测试，找到最佳 worker 数。
 
 
+{"widget":"qards-divider","config":"eyJ0eXBlIjoiYnVsbGV0cyJ9"}
+
+
+这是本系列的第一篇文章，其他文章：
+
+
 {"widget":"qards-reference","config":"eyJyZWZlcmVuY2UiOiLmiJHlpoLkvZXlr7kgdVdTR0kg6L+b6KGM5oCn6IO96LCD5LyY77yIMu+8ie+8muiuvuWumiB3b3JrZXIg5pWw6YePIn0="}
