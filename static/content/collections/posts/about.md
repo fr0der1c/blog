@@ -11,7 +11,7 @@ isPage: true
 isFeatured: false
 hero:
   image: /images/uploads/andrew-ridley-76547-unsplash.jpg
-excerpt: 博客简介和博主的个人简介
+excerpt: 博客简介、博主的个人简介以及其他常见问题。
 ---
 **为什么要建立这个博客？**
 
@@ -30,12 +30,6 @@ Python, Web Development, DevOps, Infrastructure
 Frederic Chan，中南大学大三学生，中南大学校内知名（日均 PV 1000+，总访问量百万）课表应用“每课”创始人，前字节跳动后端实习生。正在找实习，欢迎 HR 联系。
 
 邮件：frederic.t.chan@gmail.com
-
-{"widget":"qards-divider","config":"eyJ0eXBlIjoiYnVsbGV0cyJ9"}
-
-**为什么博客没有评论区？**
-
-这个博客使用的是 Qards，一个仍处于早期开发期的静态博客平台。暂时还没有评论区功能，期待作者早日加上这个功能吧。我也很想要评论区啊 \[捂脸] 如果想对文章进行交流的话可以到 https://base.admirable.pro 的“综合技术讨论区”。
 
 {"widget":"qards-divider","config":"eyJ0eXBlIjoiYnVsbGV0cyJ9"}
 
