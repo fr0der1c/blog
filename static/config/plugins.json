@@ -11,6 +11,10 @@
       "endpoint": ""
     }
   },
+  "disqus": {
+    "enable": true,
+    "shortname": "admirable-blog"
+  },
   "search": {
     "enable": false,
     "algolia": {
@@ -18,10 +22,6 @@
       "indexName": "",
       "searchKey": ""
     }
-  },
-  "disqus": {
-    "enable": false,
-    "shortname": ""
   },
   "rssFeed": {
     "enable": true
