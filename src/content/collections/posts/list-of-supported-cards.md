@@ -12,6 +12,9 @@ meta:
   keywords: 'Qards, widgets, components, blog'
 isPage: false
 isFeatured: false
+pinSidebar:
+  enable: false
+  categories: Qards
 showAuthor: true
 hero:
   alt: Qards - List of supported cards

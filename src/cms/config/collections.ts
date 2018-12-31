@@ -605,6 +605,33 @@ export const postsCollection = {
 		required: false,
 		default : false,
 	}, {
+		label   : 'Sidebar pinning',
+		name    : 'pinSidebar',
+		widget  : 'object',
+		required: false,
+		hint    : `Alter these rules to pin a post to the sidebar of your blog. A pinned
+		post can be used to drive traffic to a post which can be a sales page, product intro or
+		just about anything that you want to promote. NOTICE: a maximum of two (2) posts can be
+		pinned to the sidebar`,
+		fields  : [{
+			label   : 'Enable?',
+			name    : 'enable',
+			widget  : 'boolean',
+			required: true,
+			default : false,
+		}, {
+			label        : 'Target categories',
+			name         : 'categories',
+			widget       : 'relation',
+			collection   : 'categories',
+			searchFields : ['title', 'excerpt'],
+			valueField   : 'title',
+			displayFields: ['title'],
+			required     : true,
+			hint         : `Select the category where this post should appear in the sidebar. 
+			WARNING: A current limitation in the CMS does not allow selecting multiple categories`,
+		}],
+	}, {
 		label   : 'Hero',
 		name    : 'hero',
 		widget  : 'object',
