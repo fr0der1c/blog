@@ -41,6 +41,7 @@ interface State {
 
 export default class Posts extends Component<Props, State> {
 	static renderAuthor(post: PostType) {
+		const performance = getSettingsConfig('performanceMode');
 		if (post.authors && post.authors.length) {
 			return <Author className={'post-card-author'}>
 				{post.authors[0].frontmatter.avatar && !performance &&
@@ -93,7 +94,7 @@ export default class Posts extends Component<Props, State> {
 		const showHero = (!performance && !coverversion) || coverversion;
 
 		return (
-			<Wrapper coverversion={coverversion || false} className={darkTheme ? 'darktheme' : ''}>
+			<Wrapper className={darkTheme ? 'darktheme' : ''}>
 				{title && <h3>{title}</h3>}
 
 				<List as="ul" style={{
