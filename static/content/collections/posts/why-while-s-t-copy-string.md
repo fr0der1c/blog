@@ -10,7 +10,7 @@ meta:
 isPage: true
 isFeatured: false
 hero:
-  image: /images/uploads/andrew-ridley-76547-unsplash.jpg
+  image: /images/uploads/wx20190118-215721-2x.jpg
 excerpt: >-
   今天在网上看到一个问题：为什么 while (*s++ = *t++); 的作用是复制字符串？因为自己 C
   语言功底不好，所以也经过了一番搜索才得到答案。在这里记录一下。
