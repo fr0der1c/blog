@@ -2,7 +2,7 @@
 title: 为什么 while (*s++ = *t++); 的作用是复制字符串？
 created_at: 2018-11-14T17:06:35.014Z
 tags:
-  - misc
+  - C
 authors: Frederic Chan
 categories: Misc
 meta:
@@ -11,6 +11,22 @@ isPage: true
 isFeatured: false
 hero:
   image: /images/uploads/andrew-ridley-76547-unsplash.jpg
-excerpt: 博客简介、博主的个人简介以及其他常见问题。
+excerpt: >-
+  今天在网上看到一个问题：为什么 while (*s++ = *t++); 的作用是复制字符串？因为自己 C
+  语言功底不好，所以也经过了一番搜索才得到答案。在这里记录一下。
 ---
-some content
+`a = \*t++;` 表示 `a = \*t`; 接着 `++t`; 
+
+同理，`\*s++ = a`; 表示 `\*s = a;` 之后 `++s;`
+
+所以 `\*s++ = \*t++;` 等价于：
+
+
+{"widget":"qards-code","config":"eyJjb2RlIjoiYSA9ICp0O1xuKyt0O1xuKnMgPSBhO1xuKytzOyAiLCJsYW5ndWFnZSI6ImMifQ=="}
+
+
+所以上面的语句每执行一次，便把当前 \*t 的值赋给 \*s，接着地址 t 和 s 前移一位。因此利用 while 循环即可实现字符串的复制。 
+
+关于跳出循环，`while(a = b) { }` 表示 `a = b; while(a) { } `
+
+所以当 b 的值为 0 时跳出循环。即当 \*t 为字符串末尾的结束符`\0`时，`\*s = ‘\0’`; 因为`\0`在 ASCII 码中编码为 0，之后执行 `while(0){}` 跳出循环。
