@@ -7,7 +7,7 @@ authors: Frederic Chan
 categories: Misc
 meta:
   keywords: about
-isPage: true
+isPage: false
 isFeatured: false
 hero:
   image: /images/uploads/wx20190118-215721-2x.jpg
