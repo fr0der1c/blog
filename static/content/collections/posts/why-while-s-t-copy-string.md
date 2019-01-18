@@ -1,6 +1,6 @@
 ---
 title: 为什么 while (*s++ = *t++); 的作用是复制字符串？
-created_at: 2018-11-14T17:06:35.014Z
+created_at: 2019-01-18T14:06:35.014Z
 tags:
   - C
 authors: Frederic Chan
