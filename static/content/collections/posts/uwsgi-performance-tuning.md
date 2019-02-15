@@ -176,4 +176,4 @@ uWSGI 并不是只需要监听 accept() 请求，因此内核对 accept() 的防
 
 
 
-{"widget":"qards-reference","config":"eyJyZWZlcmVuY2UiOiJ1d3NnaS1wZXJmb3JtYW5jZS10dW5pbmctMyJ9"}
+{"widget":"qards-reference","config":"eyJyZWZlcmVuY2UiOiLmiJHlpoLkvZXlr7kgdVdTR0kg6L+b6KGM5oCn6IO96LCD5LyY77yIM++8ie+8muS9v+eUqOWNj+eoiyJ9"}
