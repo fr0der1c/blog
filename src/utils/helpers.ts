@@ -12,7 +12,7 @@ let postsConfig = require('../../static/config/posts.json');
 let pluginsConfig = require('../../static/config/plugins.json');
 let themeConfig = require('../../static/config/theme.json');
 
-export const cPattern = /^{"widget":"([a-zA-Z0-9-]+)","config":"(.*?)"}$/;
+export const cPattern = /{"widget":"([a-zA-Z0-9-]+)","config":"(.*?)"}/;
 export const cPatternWithId = (id: string): string => {
 	return `{"widget":"${id}","config":"(.*?)"}`;
 };
@@ -94,7 +94,7 @@ export function tokenizePost(post: PostType): PostType {
 export function slugify(text: string) {
 	return text.toString().toLowerCase()
 		.replace(/\s+/g, '-')           // Replace spaces with -
-		.replace(/[`~!@#$%^&*()_|+=?;:'",.<>{}\[\]\\\/]+/g, '')       // Remove all non-word chars
+		.replace(/[`~!@#$%^&*()_|+=?;:’'",.<>{}\[\]\\\/]+/g, '')       // Remove all non-word chars
 		.replace(/--+/g, '-')         // Replace multiple - with single -
 		.replace(/^-+/, '')             // Trim - from start of text
 		.replace(/-+$/, '')// Trim - from end of text

@@ -2,8 +2,8 @@ import React from 'react';
 
 import TrackVisibility from 'react-on-screen';
 
-import {Article, Date, Excerpt, Hero, Title} from './styles';
 import MarkdownRender from '../markdown';
+import {Article, Date, Excerpt, Hero, Title} from './styles';
 import {cPattern, lineRepresentsEncodedComponent} from '../../utils/helpers';
 import {decodeWidgetDataObject} from '../../cms/utils';
 
@@ -40,6 +40,7 @@ interface State {
 export default class Post extends React.Component<Props, State> {
 	state = {bodyLines: []};
 
+	//	do not add widgets here if they are not imported above
 	staticWidgets = ['image', 'qards-section-heading'];
 
 	/**
@@ -125,6 +126,10 @@ export default class Post extends React.Component<Props, State> {
 		return <QardHeader {...config}/>;
 	}
 
+	//	`QardHeader` and `QardImageContent` are the only cards being loaded
+	//	here by default so they can be inserted into a static render in order
+	//	to mitigate the loss of content for cralwers that lack a javascript
+	//	interpreter
 	renderStaticWidget(line: string) {
 		const params = line.match(cPattern);
 
@@ -143,7 +148,7 @@ export default class Post extends React.Component<Props, State> {
 
 	bodyMd(props?: Props): string {
 		const {post, previewData} = props ? props : this.props;
-		return (post ? post.md : (previewData ? previewData.md : '')) || '';
+		return (post ? post.html : (previewData ? previewData.md : '')) || '';
 	}
 
 	get mdLines(): string[] {
@@ -199,8 +204,19 @@ export default class Post extends React.Component<Props, State> {
 		}
 	}
 
+	renderSection(part: string) {
+		//	If we're in preview mode we need to load the markdown ourselves
+		//	In normal mode, we use the HTML from our props
+		const {preview} = this.props;
+
+		return preview ? <div className="paragraphs">
+			<MarkdownRender md={part}/>
+		</div> : <div className="paragraphs" dangerouslySetInnerHTML={{
+			__html: part,
+		}}/>;
+	}
+
 	renderStaticBody() {
-		return '';
 		//	Since we're code splitting the qard modules and lazy loading them
 		//	we're losing SEO. This method returns the markdown without the qard
 		//	modules so we can push the text content out right away until the
@@ -218,9 +234,7 @@ export default class Post extends React.Component<Props, State> {
 						accumulator = [];
 
 						return <React.Fragment key={k}>
-							<div className="paragraphs">
-								<MarkdownRender md={acc}/>
-							</div>
+							{this.renderSection(acc)}
 							{this.renderStaticWidget(line)}
 						</React.Fragment>;
 					}
@@ -230,9 +244,7 @@ export default class Post extends React.Component<Props, State> {
 				}
 			})}
 
-			{(accumulator.length > 0) && <div className="paragraphs">
-				<MarkdownRender md={accumulator.join('\n')}/>
-			</div>}
+			{(accumulator.length > 0) && this.renderSection(accumulator.join('\n\n'))}
 		</React.Fragment>;
 	}
 
@@ -255,9 +267,7 @@ export default class Post extends React.Component<Props, State> {
 					accumulator = [];
 
 					return <React.Fragment key={k}>
-						<div className="paragraphs">
-							<MarkdownRender md={acc}/>
-						</div>
+						{this.renderSection(acc)}
 						{line.computed}
 					</React.Fragment>;
 				} else {
@@ -267,9 +277,7 @@ export default class Post extends React.Component<Props, State> {
 			})}
 
 			{/* Render the last bits that entered the accumulator */}
-			{accumulator.length > 0 && <div className="paragraphs">
-				<MarkdownRender md={accumulator.join('\n\n')}/>
-			</div>}
+			{accumulator.length > 0 && this.renderSection(accumulator.join('\n\n'))}
 		</React.Fragment>;
 	}
 
@@ -298,7 +306,7 @@ export default class Post extends React.Component<Props, State> {
 			<Article>
 				{title && <Title className={'qards-post-title'}>{title}</Title>}
 				{created_at && <Date className={'qards-post-date'}>{created_at.toString()}</Date>}
-				{hero && <Hero className={'qards-post-hero'}><QardImageContent {...hero}/></Hero>}
+				{hero && <Hero className={'qards-post-hero'}><QardImageContent lightbox={true} {...hero}/></Hero>}
 				{excerpt && <Excerpt className={'qards-post-excerpt'}>{excerpt}</Excerpt>}
 
 				{this.renderBody()}

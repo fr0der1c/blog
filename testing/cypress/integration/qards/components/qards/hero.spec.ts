@@ -1,9 +1,5 @@
 /// <reference types="Cypress" />
 
-const chaiColors = require('chai-colors');
-
-chai.use(chaiColors);
-
 Cypress.on('uncaught:exception', (err, runnable) => {
 	// returning false here prevents Cypress from
 	// failing the test
@@ -12,7 +8,7 @@ Cypress.on('uncaught:exception', (err, runnable) => {
 
 context('Qards:Hero', () => {
 	beforeEach(() => {
-		cy.visit('/posts/list-of-supported-cards/');
+		cy.visit('/list-of-supported-cards/');
 	});
 
 	it('should render with required css class', () => {
@@ -44,6 +40,6 @@ context('Qards:Hero', () => {
 			.find('span')
 			.first()
 			.should('have.css', 'color')
-			.and('be.colored', '#5a6c7a');
+			.and('eq', 'rgb(90, 108, 122)');
 	});
 });

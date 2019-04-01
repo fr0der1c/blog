@@ -1,9 +1,5 @@
 /// <reference types="Cypress" />
 
-const chaiColors = require('chai-colors');
-
-chai.use(chaiColors);
-
 Cypress.on('uncaught:exception', (err, runnable) => {
 	// returning false here prevents Cypress from
 	// failing the test
@@ -12,7 +8,7 @@ Cypress.on('uncaught:exception', (err, runnable) => {
 
 context('Components:Post', () => {
 	beforeEach(() => {
-		cy.visit('/posts/list-of-supported-cards/');
+		cy.visit('/list-of-supported-cards/');
 	});
 
 	it('should render only one H1 as a page title', () => {
@@ -44,7 +40,7 @@ context('Components:Post', () => {
 		cy.get('.qards-post-excerpt')
 			.should('be.visible')
 			.should('have.css', 'color')
-			.and('be.colored', '#5a6c7a');
+			.and('eq', 'rgb(90, 108, 122)');
 	});
 
 	it('should maximize the hero img on click', () => {
@@ -52,5 +48,9 @@ context('Components:Post', () => {
 		cy.get('#lightboxBackdrop').should('be.visible');
 		cy.get('body').type('{esc}');
 		cy.get('#lightboxBackdrop').should('not.be.visible');
+	});
+
+	it('should render emojis', () => {
+		cy.get('img.emojione').click().should('be.visible');
 	});
 });

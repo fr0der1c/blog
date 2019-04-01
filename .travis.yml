@@ -1,0 +1,19 @@
+language: node_js
+cache:
+  directories:
+    - $HOME/.npm
+    - node_modules
+node_js:
+  - '8'
+  - '10'
+install:
+  - npm i
+before_script:
+  - npm install -g cypress
+script:
+  - npm run test:ci
+  - npm run test:e2e
+notifications:
+  email: false
+git:
+  depth: 5
